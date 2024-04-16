@@ -329,7 +329,7 @@
                                 ),
                                 PopsPanel.getSwtichDetail(
                                     "自动推送SAP",
-                                    "在推送界面增加按钮，根据定时循环自动推送SAP",
+                                    "验单导出SAP界面增加根据定时循环自动推送SAP",
                                     "autoSyncSAP",
                                     true
                                 ),
@@ -411,14 +411,14 @@
                             forms: [
                                 PopsPanel.getSwtichDetail(
                                     "线路优化",
-                                    "根据清单过滤并排序线路列表",
+                                    "仅显示列表中的线路选项",
                                     "filiterroute",
                                     true
                                 ),
                             ],
                         },
                         {
-                            text: "线路清单（修改后刷新页面生效）",
+                            text: "线路列表（修改后刷新页面生效）",
                             type: "forms",
                             forms: [
                                 {
@@ -719,16 +719,24 @@
         * 物流线路优化，仅显示白名单内线路
         */
         FiliterRoute() {
-            // 初始化线路白名单
+            /**
+             * 初始化线路白名单
+             * @param {Object} parsedData - 解析后的数据对象，预期包含一个data数组属性
+             * @returns {Array} routeList - 线路名称数组
+             */
             function initializeRouteList(parsedData) {
-                let ROUTE_LIST = PopsPanel.getValue("om-discussions-filter-route");
-                if (!ROUTE_LIST) {
-                    ROUTE_LIST = parsedData.data.map((item) => item.vrRotName);
-                    PopsPanel.setValue("om-discussions-filter-route", ROUTE_LIST.join('\n'));
-                } else {
-                    ROUTE_LIST = ROUTE_LIST.split('\n');
+                if (!parsedData || !Array.isArray(parsedData.data)) {
+                    return [];
                 }
-                return ROUTE_LIST;
+
+                let routeList = PopsPanel.getValue("om-discussions-filter-route");
+                if (!routeList) {
+                    routeList = parsedData.data.map((item) => item.vrRotName);
+                    PopsPanel.setValue("om-discussions-filter-route", routeList.join('\n'));
+                } else {
+                    routeList = routeList.split('\n');
+                }
+                return routeList;
             }
             /**
             * 劫持请求
@@ -744,24 +752,33 @@
                     * @param {XMLHttpRequest} _request_
                     */
                     request.response = function (_request_) {
-                        let data = utils.toJSON(_request_.responseText);
-                        // 定义白名单
-                        const WHITE_LIST = initializeRouteList(data);
-                        // 过滤数据
-                        const result = data.data.filter(item => {
-                            if (WHITE_LIST.includes(item.vrRotName)) {
-                                return item;
-                            }
-                        });
-                        // 根据白名单内顺序重新排列数据
-                        const resultInOrder = WHITE_LIST.filter(whiteItem => result.find(resultItem => resultItem.vrRotName === whiteItem)).map(whiteItem => {
-                            return result.find(resultItem => resultItem.vrRotName === whiteItem);
-                        });
-                        data.data = resultInOrder;
-                        data.rows = resultInOrder;
-                        log.success("已优化线路列表!");
-                        Qmsg.success(`已优化线路列表!`, { timeout: 1500 });
-                        _request_.responseText = JSON.stringify(data);
+                        try {
+                            let data = utils.toJSON(_request_.responseText);
+                            if (typeof data !== 'object' || !Array.isArray(data.data)) return; // 验证data的格式
+
+                            // 定义白名单 使用Set提高查找效率
+                            const whiteList = new Set(initializeRouteList(data));
+                            // 过滤数据
+                            const result = data.data.filter(item => whiteList.has(item.vrRotName));
+
+                            // 根据白名单顺序重新排列数据
+                            const resultInOrder = Array.from(whiteList).reduce((acc, whiteItem) => {
+                                const resultItem = result.find(item => item.vrRotName === whiteItem);
+                                if (resultItem) {
+                                    acc.push(resultItem);
+                                }
+                                return acc;
+                            }, []);
+
+                            data.data = resultInOrder;
+                            data.rows = resultInOrder;
+                            log.success("已优化线路列表!");
+                            Qmsg.success(`已优化线路列表!`, { timeout: 1500 });
+                            _request_.responseText = JSON.stringify(data);
+                        } catch (error) {
+                            log.error("处理线路列表时出现错误:", error);
+                            Qmsg.error(`线路列表优化失败，请稍后再试!`, { timeout: 1500 });
+                        }
                     };
                 }
             });
@@ -770,11 +787,20 @@
         /**
         * 送货点过滤，根据黑名单过滤掉不需要显示的站点
         */
-        FiliterShipToName() {
+        async FiliterShipToName() {
             // 初始化名单
-            function initializeRouteList() {
-                let SHIPTONAME_LIST = PopsPanel.getValue("om-discussions-filter-shipto").split('\n');
-                return SHIPTONAME_LIST;
+            async function initializeRouteList() {
+                let shiptoNameList = PopsPanel.getValue("om-discussions-filter-shipto").split('\n');
+                return shiptoNameList;
+            }
+
+            /**
+             * XSS防护 - 转义HTML特殊字符
+             * @param {string} html 
+             * @returns {string}
+             */
+            function escapeHTML(html) {
+                return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
             }
             /**
             * 劫持请求
@@ -790,26 +816,35 @@
                     * @param {XMLHttpRequest} _request_
                     */
                     request.response = function (_request_) {
-                        let data = utils.toJSON(_request_.responseText);
-                        const BLACK_LIST = initializeRouteList();
-                        const result = data.data.filter(item => {
-                            // 部分匹配：item.vrSptName.includes(name)
-                            if (!BLACK_LIST.some(name => name === item.vrSptName)) {
-                                return item;
-                            }
-                        });
+                        try {
+                            let data = utils.toJSON(_request_.responseText);
+                            // 使用异步获取的黑名单
+                            initializeRouteList().then(blackList => {
+                                const result = data.data.filter(item => {
+                                    // 部分匹配：item.vrSptName.includes(name)
+                                    if (!blackList.some(name => name === item.vrSptName)) {
+                                        return item;
+                                    }
+                                });
 
-                        // 只有存在被过滤的情况下才输出显示信息
-                        if (result.length < data.data.length) {
-                            const filteredNames = data.data
-                            .filter(item => BLACK_LIST.some(name => name === item.vrSptName))
-                            .map(item => item.vrSptName);
-                            const uniqueFilteredNames = Array.from(new Set(filteredNames));
-                            const formattedNames = uniqueFilteredNames.map(name => `<div>${name}</div>`).join('');
-                            Qmsg.info(`已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`, { timeout: 2000 });
-                            data.data = result;
-                            data.rows = result;
-                            _request_.responseText = JSON.stringify(data);
+                                if (result.length < data.data.length) {
+                                    const filteredNames = data.data
+                                        .filter(item => blackList.some(name => name === item.vrSptName))
+                                        .map(item => item.vrSptName);
+
+                                    const uniqueFilteredNames = Array.from(new Set(filteredNames));
+                                    // 防止XSS，清理名称
+                                    const formattedNames = uniqueFilteredNames.map(name => `<div>${escapeHTML(name)}</div>`).join('');
+                                    Qmsg.info(`已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`, { timeout: 2000 });
+                                    data.data = result;
+                                    data.rows = result;
+                                    _request_.responseText = JSON.stringify(data);
+                                }
+                            }).catch(error => {
+                                log.error("初始化列表失败:", error);
+                            });
+                        } catch (error) {
+                            log.error("处理请求失败:", error);
                         }
                     };
                 }
@@ -921,27 +956,27 @@
                                 var endDate = document.querySelector("#d4312").value
                                 PostData(startDate, endDate)
                                     .then(result => {
-                                    if (result == 0) {
-                                        timesNow.innerText = number;
-                                        number += 1
-                                    } else {
-                                        number = 1
-                                        timesNow.innerText = number;
-                                    }
-                                    syncLog.innerText = `[${utils.formatTime(new Date(), "yyyy-MM-dd HH:mm:ss")}] 日期： ${startDate} 到 ${endDate} 导出记录：${result} 条`;
-                                })
+                                        if (result == 0) {
+                                            timesNow.innerText = number;
+                                            number += 1
+                                        } else {
+                                            number = 1
+                                            timesNow.innerText = number;
+                                        }
+                                        syncLog.innerText = `[${utils.formatTime(new Date(), "yyyy-MM-dd HH:mm:ss")}] 日期： ${startDate} 到 ${endDate} 导出记录：${result} 条`;
+                                    })
                                     .catch(error => {
-                                    number = 99
-                                    autosync.disabled = true;
-                                    // 处理请求过程中可能发生的任何错误
-                                    log.error("错误:", error);
-                                });
+                                        number = 99
+                                        autosync.disabled = true;
+                                        // 处理请求过程中可能发生的任何错误
+                                        log.error("错误:", error);
+                                    });
                             } else {
                                 clearInterval(timer);
                                 timesNow.innerText = number;
                                 syncLog.innerText = `连续${number}次无记录推送，停止执行。`;
                             }
-                        }, Math.floor(1000 * 60 * syncInterval) + Math.random() * 1000 * 10);
+                        }, Math.floor(1000 * 60 * syncInterval) + Math.random() * 10 * 1000);
                     } catch (error) {
                         log.error("An error occurred:", error);
                     }
