@@ -222,7 +222,7 @@
         showPanel() {
             pops.panel({
                 title: {
-                    text: `${GM_info?.script?.name || "OM优化"}-设置`,
+                    text: `${GM_info?.script?.name || "OM功能扩展"}-设置`,
                     position: "center",
                 },
                 content: this.getContent(),
@@ -840,7 +840,7 @@
                         parentElement.querySelectorAll("tr.x-grid3-hd-row")[1].setAttribute("hidden", "");
                         //document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-0.x-grid3-cell-first.sort-asc").parentNode.setAttribute("hidden", "");
                     });
-                }, 200); // 延迟1秒钟执行，你可以根据需要调整延迟的时间
+                }, 200);
             });
         },
     }
