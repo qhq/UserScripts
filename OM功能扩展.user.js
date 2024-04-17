@@ -4,8 +4,6 @@
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
-// @downloadURL  https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
-// @updateURL    https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // @match        *://*.brightdairy.com*/*
 // @icon         data:image/x-icon;base64,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/////////////+Lj+f+cl+z//////+fn+v9kWOH////////////4+f3/OSfY/y4W1v8tFtaKLhbW/y4W1v9GNtv/ioLo/9vb+P//////al7i/y4W1v8uFtb/LhbW/7278v/+/v7/m5Ts/4qC6P9iVOD/LhbW/zIh1//8/P7/+/v+/+rt+//3+P3//////2Nc4f/v7/z/7/H8/zgo2P+EfOf/3d74//z9/v9FM9r/LhbW/y0W1oouFtb/LhbW/y4W1v8uFtb/hn7n//////+XkOv/LhbW/y4W1v8uFtb/vbvy//7+/v9LN9v/LhbW/y4W1v8uFtb/MiHX//z8/v/Z1/j/OirY/7a28f//////UkXd/+Pj+f/v8fz/Mh7X/y4W1v/BwfP//P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/LhbW/y4W1v9bTt///v7+/8TC8/8uFtb/LhbW/y4W1v+9u/L//v7+/0s32/8uFtb/LhbW/y4W1v8yIdf//Pz+/9bU9/8uFtb/sa/w//////9SRd3/4+P5/+/x/P8yHtf/LhbW/8HB8//8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v8uFtb/LhbW/zom2P/29/3/6+z7/zId1/8uFtb/LhbW/7278v/+/v7/Szfb/y4W1v8uFtb/LhbW/zIh1//8/P7/1tT3/y4W1v+xr/D//////1JF3f/j4/n/+vr+/73A8/+7vvL/6+37//z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/y4W1v8uFtb/LhbW/9jZ9//+/v7/TDzc/y4W1v8uFtb/vbvy//7+/v9LN9v/LhbW/y4W1v8uFtb/MiHX//z8/v/W1Pf/LhbW/7Gv8P//////UkXd/+Pj+f///////////////////////P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/LhbW/y4W1v8uFtb/r6vv//////92bOT/LhbW/y4W1v+9u/L//v7+/0s32/8uFtb/LhbW/y4W1v8yIdf//Pz+/9bU9/8uFtb/sa/w//////9SRd3/4+P5//f4/f+Zmuv/l5br/+Di+f/8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v9vZeP/4N75/+De+f/w8Pz//////+7t+//g3vn/4N75//X1/f/+/v7/5eP6/+De+f+Tier/LhbW/zIh1//8/P7/+fn9/+De+f/09Pz//////1JF3f/j4/n/7/H8/zIe1/8uFtb/wcHz//z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/5iQ6////////////////////////////////////////////////////////////6Wb7f8uFtb/MiHX//z8/v//////////////////////UkXd/+Pj+f/v8fz/Mh7X/y4W1v/BwfP//P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/Py7Z/3hu5f95b+X/eW/l/3lv5f+vrfD//////6+t8P95b+X/eW/l/3lv5f95b+X/WEne/y4W1v8yIdf//Pz+/+Xk+v95b+X/zs71//////9SRd3/4+P5//n6/v+ytfD/sLPw/+jq+v/8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v8uFtb/LhbW/0g22/9aSt//RjTb/4J65///////gnrn/0Y02/9aSt//SDbb/y4W1v8uFtb/LhbW/zIh1//8/P7/1tT3/y4W1v+xr/D//////1JF3f/j4/n///////////////////////z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/y4W1v83JNj/6er7//z9/v/a2/j/g33n//////+Dfef/2dv4//z9/v/p6/v/NyPY/y4W1v8uFtb/MiHX//z8/v/W1Pf/LhbW/7Gv8P//////UkXd/+Pj+f/4+f3/o6Xt/6Gh7f/k5vr//P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/LhbW/3ty5f/+/v7//P3+/8jJ9P+Ce+f//////4J85//HyPT//P3+//7+/v97cuX/LhbW/y4W1v8yIdf//Pz+/9bU9/8uFtb/sa/w//////9SRd3/4+P5/+/x/P8yHtf/LhbW/8HB8//8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v8uF9b/0ND2//////9+dub/Mx3X/4J65///////gnrn/zMd1/9+dub//////9DQ9v8uFtb/LhbW/zIh1//8/P7/1tT3/4R/5//s7vv//////1JF3f/j4/n/7/H8/zYm2P9CN9r/yMr0//z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/1ZI3v/9/f7/5+j6/zUg1/8uFtb/gnrn//////+Ceuf/LhbW/zQg1//n6Pr//f3+/1ZI3v8uFtb/MiHX//z8/v/W1Pf/wr7z///////+/v7/Szzc/+Pj+f/v8fz/oqHt//j5/f/9/f7//P3+/0Uz2v8uFtb/LRbWii4W1v8uFtb/VUve/4OA5/9jWuH/LhbW/y4W1v+Ceuf//////4J65/8uFtb/LhbW/2Na4f+DgOf/VUve/y4W1v8wG9b/gn/n/3Nt5P9VR97/g4Dn/3dx5f8vGNb/4+P5/+/x/P+mpe7////////////r7fv/NCDX/y4W1v8tFtaKLhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/zcm2P9EO9v/NybY/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v9BNtr/Qjna/zMg1/9EO9v/RDvb/zor2P8uFtb/LhbW/y4W1YguFtbcLhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbWZi4W1l4tFtb4LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1tAuFtYO//x////AA//+AAD/+AAAP/AAAA/gAAAHwAAAA4AAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAE=
 // @grant        GM_registerMenuCommand
@@ -22,6 +20,8 @@
 // @require      https://update.greasyfork.org/scripts/456485/1357649/pops.js
 // @require      https://update.greasyfork.org/scripts/455186/1355010/WhiteSevsUtils.js
 // @require      https://update.greasyfork.org/scripts/465772/1344519/DOMUtils.js
+// @downloadURL  https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
+// @updateURL    https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
 
 (function () {
@@ -75,8 +75,8 @@
     });
 
     /**
-   * GreasyFork的css
-   */
+     * GreasyFork的css
+     */
     const GreasyforkCSS = {
         UIScriptListCSS: `
         .w-script-list-item {
@@ -117,32 +117,32 @@
       }
     `,
         /**
-       * 初始化
-       */
+         * 初始化
+         */
         init() {
             GM_addStyle(this.OwnCSS);
         },
     };
 
     /**
-   * 配置面板
-   */
+     * 配置面板
+     */
     const PopsPanel = {
         /**
-     * 本地存储的总键名
-     */
+         * 本地存储的总键名
+         */
         key: "GM_Panel",
         /**
-     * 属性attributes的data-key
-     */
+         * 属性attributes的data-key
+         */
         attributeDataKey_Name: "data-key",
         /**
-     * 属性attributes的data-default-value
-     */
+         * 属性attributes的data-default-value
+         */
         attributeDataDefaultValue_Name: "data-default-value",
         /**
-     * 初始化菜单
-     */
+         * 初始化菜单
+         */
         initMenu() {
             this.initLocalDefaultValue();
             if (unsafeWindow.top !== unsafeWindow.self) {
@@ -164,8 +164,8 @@
             ]);
         },
         /**
-     * 初始化本地设置默认的值
-     */
+         * 初始化本地设置默认的值
+         */
         initLocalDefaultValue() {
             let content = this.getContent();
             content.forEach((item) => {
@@ -178,9 +178,14 @@
                             if (!containerItem.attributes) {
                                 return;
                             }
-                            let key = containerItem.attributes[this.attributeDataKey_Name];
+                            let key =
+                                containerItem.attributes[
+                                    this.attributeDataKey_Name
+                                ];
                             let defaultValue =
-                                containerItem.attributes[this.attributeDataDefaultValue_Name];
+                                containerItem.attributes[
+                                    this.attributeDataDefaultValue_Name
+                                ];
                             if (this.getValue(key) == null) {
                                 this.setValue(key, defaultValue);
                             }
@@ -191,37 +196,37 @@
             });
         },
         /**
-     * 设置值
-     * @param {string} key 键
-     * @param {any} value 值
-     */
+         * 设置值
+         * @param {string} key 键
+         * @param {any} value 值
+         */
         setValue(key, value) {
             let localValue = GM_getValue(this.key, {});
             localValue[key] = value;
             GM_setValue(this.key, localValue);
         },
         /**
-     * 获取值
-     * @param {string} key 键
-     * @param {any} defaultValue 默认值
-     * @returns {any}
-     */
+         * 获取值
+         * @param {string} key 键
+         * @param {any} defaultValue 默认值
+         * @returns {any}
+         */
         getValue(key, defaultValue) {
             let localValue = GM_getValue(this.key, {});
             return localValue[key] ?? defaultValue;
         },
         /**
-     * 删除值
-     * @param {string} key 键
-     */
+         * 删除值
+         * @param {string} key 键
+         */
         deleteValue(key) {
             let localValue = GM_getValue(this.key, {});
             delete localValue[key];
             GM_setValue(this.key, localValue);
         },
         /**
-     * 显示设置面板
-     */
+         * 显示设置面板
+         */
         showPanel() {
             pops.panel({
                 title: {
@@ -243,13 +248,13 @@
             });
         },
         /**
-     * 获取按钮配置
-     * @param {string} text 文字
-     * @param {string|undefined} description 描述
-     * @param {string} key 键
-     * @param {boolean} defaultValue 默认值
-     * @param {?(event:Event,value: boolean)=>boolean} _callback_ 点击回调
-     */
+         * 获取按钮配置
+         * @param {string} text 文字
+         * @param {string|undefined} description 描述
+         * @param {string} key 键
+         * @param {boolean} defaultValue 默认值
+         * @param {?(event:Event,value: boolean)=>boolean} _callback_ 点击回调
+         */
         getSwtichDetail(text, description, key, defaultValue, _callback_) {
             let result = {
                 text: text,
@@ -278,9 +283,9 @@
             return result;
         },
         /**
-     * 获取配置内容
-     * @returns {PopsPanelContentConfig[]}
-     */
+         * 获取配置内容
+         * @returns {PopsPanelContentConfig[]}
+         */
         getContent() {
             return [
                 {
@@ -301,11 +306,16 @@
                                     getValue() {
                                         return PopsPanel.getValue(
                                             this.attributes["data-key"],
-                                            this.attributes["data-default-value"]
+                                            this.attributes[
+                                                "data-default-value"
+                                            ]
                                         );
                                     },
                                     callback(event, value) {
-                                        PopsPanel.setValue(this.attributes["data-key"], value);
+                                        PopsPanel.setValue(
+                                            this.attributes["data-key"],
+                                            value
+                                        );
                                     },
                                     placeholder: "请输入分页大小",
                                 },
@@ -343,11 +353,16 @@
                                     getValue() {
                                         return PopsPanel.getValue(
                                             this.attributes["data-key"],
-                                            this.attributes["data-default-value"]
+                                            this.attributes[
+                                                "data-default-value"
+                                            ]
                                         );
                                     },
                                     callback(event, value) {
-                                        PopsPanel.setValue(this.attributes["data-key"], value);
+                                        PopsPanel.setValue(
+                                            this.attributes["data-key"],
+                                            value
+                                        );
                                     },
                                     placeholder: "请输入推送时间间隔",
                                 },
@@ -378,25 +393,37 @@
                                 {
                                     type: "own",
                                     getLiElementCallBack(liElement) {
-                                        let textareaDiv = DOMUtils.createElement(
-                                            "div",
-                                            {
-                                                className: "pops-panel-textarea",
-                                                innerHTML: `<textarea placeholder="请输入需要过滤掉的网点名称，每行一个" style="height:150px;"></textarea>`,
-                                            },
-                                            {
-                                                style: "width: 100%;",
-                                            }
+                                        let textareaDiv =
+                                            DOMUtils.createElement(
+                                                "div",
+                                                {
+                                                    className:
+                                                        "pops-panel-textarea",
+                                                    innerHTML: `<textarea placeholder="请输入需要过滤掉的网点名称，每行一个" style="height:150px;"></textarea>`,
+                                                },
+                                                {
+                                                    style: "width: 100%;",
+                                                }
+                                            );
+                                        let textarea =
+                                            textareaDiv.querySelector(
+                                                "textarea"
+                                            );
+                                        const KEY =
+                                            "om-discussions-filter-shipto";
+                                        textarea.value = PopsPanel.getValue(
+                                            KEY,
+                                            ""
                                         );
-                                        let textarea = textareaDiv.querySelector("textarea");
-                                        const KEY = "om-discussions-filter-shipto";
-                                        textarea.value = PopsPanel.getValue(KEY, "");
                                         DOMUtils.on(
                                             textarea,
                                             ["input", "propertychange"],
                                             void 0,
                                             utils.debounce(function (event) {
-                                                PopsPanel.setValue(KEY, textarea.value);
+                                                PopsPanel.setValue(
+                                                    KEY,
+                                                    textarea.value
+                                                );
                                             }, 200)
                                         );
                                         liElement.appendChild(textareaDiv);
@@ -424,25 +451,37 @@
                                 {
                                     type: "own",
                                     getLiElementCallBack(liElement) {
-                                        let textareaDiv = DOMUtils.createElement(
-                                            "div",
-                                            {
-                                                className: "pops-panel-textarea",
-                                                innerHTML: `<textarea placeholder="请输入线路名称，每行一个\n留空获取默认线路" style="height:150px;"></textarea>`,
-                                            },
-                                            {
-                                                style: "width: 100%;",
-                                            }
+                                        let textareaDiv =
+                                            DOMUtils.createElement(
+                                                "div",
+                                                {
+                                                    className:
+                                                        "pops-panel-textarea",
+                                                    innerHTML: `<textarea placeholder="请输入线路名称，每行一个\n留空获取默认线路" style="height:150px;"></textarea>`,
+                                                },
+                                                {
+                                                    style: "width: 100%;",
+                                                }
+                                            );
+                                        let textarea =
+                                            textareaDiv.querySelector(
+                                                "textarea"
+                                            );
+                                        const KEY =
+                                            "om-discussions-filter-route";
+                                        textarea.value = PopsPanel.getValue(
+                                            KEY,
+                                            ""
                                         );
-                                        let textarea = textareaDiv.querySelector("textarea");
-                                        const KEY = "om-discussions-filter-route";
-                                        textarea.value = PopsPanel.getValue(KEY, "");
                                         DOMUtils.on(
                                             textarea,
                                             ["input", "propertychange"],
                                             void 0,
                                             utils.debounce(function (event) {
-                                                PopsPanel.setValue(KEY, textarea.value);
+                                                PopsPanel.setValue(
+                                                    KEY,
+                                                    textarea.value
+                                                );
                                             }, 200)
                                         );
                                         liElement.appendChild(textareaDiv);
@@ -476,12 +515,12 @@
     };
 
     /**
-   * GreasyFork的菜单
-   */
+     * GreasyFork的菜单
+     */
     const GreasyforkMenu = {
         /**
-     * @class
-     */
+         * @class
+         */
         menu: new utils.GM_Menu({
             GM_getValue,
             GM_setValue,
@@ -508,76 +547,81 @@
 
     const deliveryCusReturn = {
         /**
-        * 线路选择联动，选中开始线路，同步选中结束线路
-        */
+         * 线路选择联动，选中开始线路，同步选中结束线路
+         */
         async LinkRotName() {
             utils.waitNode('input[name="startRotName"]').then(() => {
-                const startRotNamCmp = document.querySelector('input[name="startRotName"]').nextSibling;
-                const endRotNameCmp = document.querySelector('input[name="endRotName"]').nextSibling;
-                if (startRotNamCmp && endRotNameCmp && !startRotNamCmp.classList.contains('eventListenerAdded')) {
-                    startRotNamCmp.addEventListener('focus', function () {
+                const startRotNamCmp = document.querySelector(
+                    'input[name="startRotName"]'
+                ).nextSibling;
+                const endRotNameCmp = document.querySelector(
+                    'input[name="endRotName"]'
+                ).nextSibling;
+                if (
+                    startRotNamCmp &&
+                    endRotNameCmp &&
+                    !startRotNamCmp.classList.contains("eventListenerAdded")
+                ) {
+                    startRotNamCmp.addEventListener("focus", function () {
                         endRotNameCmp.value = this.value;
                         var component = Ext.getCmp(endRotNameCmp.id);
                         if (component && component.assertValue) {
                             component.assertValue();
                         }
                     });
-                    startRotNamCmp.classList.add('eventListenerAdded');
+                    startRotNamCmp.classList.add("eventListenerAdded");
                     Qmsg.success(`已修改为线路起止同步!`, { timeout: 1500 });
-                    log.success('已修改为线路起止同步。');
+                    log.success("已修改为线路起止同步。");
                 }
             });
         },
         /**
-        * 修改页面分页大小
-        */
+         * 修改页面分页大小
+         */
         async changePageSize(pageSize = 20) {
             utils.waitNode('input[id="ext-comp-1005"]').then(() => {
-                const pageElement = document.querySelector('input[id="ext-comp-1005"]');
+                const pageElement = document.querySelector(
+                    'input[id="ext-comp-1005"]'
+                );
                 if (pageElement) {
-                    pageElement.value = pageSize
-                    Ext.getCmp('ext-comp-1004').pageSize = pageSize;
+                    pageElement.value = pageSize;
+                    Ext.getCmp("ext-comp-1004").pageSize = pageSize;
                     // Ext.getCmp('ext-comp-1004').doRefresh(0);
                     log.success(`分页大小已修改为${pageSize}`);
                 }
             });
         },
         /**
-        * 添加根据关键字勾选、取消勾选记录
-        */
+         * 添加根据关键字勾选、取消勾选记录
+         */
         async FilterKeywords() {
             utils.waitNode('input[id="ext-comp-1005"]').then(() => {
-                const toolbarLeft = document.querySelectorAll('.x-toolbar-left')[2];
+                const toolbarLeft =
+                    document.querySelectorAll(".x-toolbar-left")[2];
                 let inputKeywords = DOMUtils.createElement(
                     "input",
                     {
                         type: "text",
                         autocomplete: "on",
                         className: "x-form-text x-form-field",
-                        id: "inputKeywords"
+                        id: "inputKeywords",
                     },
                     {
                         size: "20",
                     }
                 );
-                let btnSelect = DOMUtils.createElement(
-                    "button",
-                    {
-                        type: "button",
-                        className: " x-btn-text icon-dialog-accept",
-                        id: "btnSelect",
-                        textContent: "勾选"
-                    }
-                );
-                let btnDeSelect = DOMUtils.createElement(
-                    "button",
-                    {
-                        type: "button",
-                        className: " x-btn-text icon-dialog-cancel",
-                        id: "btnDeSelect",
-                        textContent: "取消"
-                    }
-                );
+                let btnSelect = DOMUtils.createElement("button", {
+                    type: "button",
+                    className: " x-btn-text icon-dialog-accept",
+                    id: "btnSelect",
+                    textContent: "勾选",
+                });
+                let btnDeSelect = DOMUtils.createElement("button", {
+                    type: "button",
+                    className: " x-btn-text icon-dialog-cancel",
+                    id: "btnDeSelect",
+                    textContent: "取消",
+                });
                 let tdElement = DOMUtils.createElement(
                     "td",
                     {
@@ -634,90 +678,115 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>`
+                        </table>`,
                     },
                     {
                         align: "left",
                     }
                 );
                 /* 添加事件 */
-                DOMUtils.on(tdElement.querySelector('#btnSelect'), "click", function () {
-                    var extComp = unsafeWindow.Ext.getCmp('ext-comp-1003');
-                    var searchText = tdElement.querySelector("#inputKeywords").value;
-                    var gridElement = document.querySelector('.x-grid3-body');
-                    var childElements = gridElement.querySelectorAll(":scope > div");
-                    let hasMatch = false; // 添加变量进行判断
-                    childElements.forEach(function (element) {
-                        if (element.textContent.includes(searchText)) {
-                            hasMatch = true; // 如果找到匹配记录，将变量设置为 true
-                            extComp.getSelectionModel().selectRow(element.rowIndex, true)
-                        }
-                    });
-                    if (!hasMatch) {
-                        let tooltip = pops.tooltip({
-                            target: tdElement.querySelector('#btnSelect'),
-                            content: "❌ 未找到匹配记录",
-                            position: "top",
-                            alwaysShow: true,
+                DOMUtils.on(
+                    tdElement.querySelector("#btnSelect"),
+                    "click",
+                    function () {
+                        var extComp = Ext.getCmp("ext-comp-1003");
+                        var searchText =
+                            tdElement.querySelector("#inputKeywords").value;
+                        var gridElement =
+                            document.querySelector(".x-grid3-body");
+                        var childElements =
+                            gridElement.querySelectorAll(":scope > div");
+                        let hasMatch = false; // 添加变量进行判断
+                        childElements.forEach(function (element) {
+                            if (element.textContent.includes(searchText)) {
+                                hasMatch = true; // 如果找到匹配记录，将变量设置为 true
+                                extComp
+                                    .getSelectionModel()
+                                    .selectRow(element.rowIndex, true);
+                            }
                         });
-                        setTimeout(() => {
-                            tooltip.close();
-                        }, 1000);
-                    }
-                });
-                DOMUtils.on(tdElement.querySelector('#btnDeSelect'), "click", function () {
-                    var extComp = unsafeWindow.Ext.getCmp('ext-comp-1003');
-                    var searchText = tdElement.querySelector("#inputKeywords").value;
-                    var gridElement = document.querySelector('.x-grid3-body');
-                    var childElements = gridElement.querySelectorAll(":scope > div");
-                    let hasMatch = false; // 添加变量进行判断
-                    childElements.forEach(function (element) {
-                        if (element.textContent.includes(searchText)) {
-                            hasMatch = true; // 如果找到匹配记录，将变量设置为 true
-                            // console.log(element.rowIndex)
-                            // element.classList.add('x-grid3-row-selected');
-                            extComp.getSelectionModel().deselectRow(element.rowIndex)
+                        if (!hasMatch) {
+                            let tooltip = pops.tooltip({
+                                target: tdElement.querySelector("#btnSelect"),
+                                content: "❌ 未找到匹配记录",
+                                position: "top",
+                                alwaysShow: true,
+                            });
+                            setTimeout(() => {
+                                tooltip.close();
+                            }, 1000);
                         }
-                    });
-                    if (!hasMatch) {
-                        let tooltip = pops.tooltip({
-                            target: tdElement.querySelector('#btnDeSelect'),
-                            content: "❌ 未找到匹配记录",
-                            position: "top",
-                            alwaysShow: true,
+                    }
+                );
+                DOMUtils.on(
+                    tdElement.querySelector("#btnDeSelect"),
+                    "click",
+                    function () {
+                        var extComp = Ext.getCmp("ext-comp-1003");
+                        var searchText =
+                            tdElement.querySelector("#inputKeywords").value;
+                        var gridElement =
+                            document.querySelector(".x-grid3-body");
+                        var childElements =
+                            gridElement.querySelectorAll(":scope > div");
+                        let hasMatch = false; // 添加变量进行判断
+                        childElements.forEach(function (element) {
+                            if (element.textContent.includes(searchText)) {
+                                hasMatch = true; // 如果找到匹配记录，将变量设置为 true
+                                // console.log(element.rowIndex)
+                                // element.classList.add('x-grid3-row-selected');
+                                extComp
+                                    .getSelectionModel()
+                                    .deselectRow(element.rowIndex);
+                            }
                         });
-                        setTimeout(() => {
-                            tooltip.close();
-                        }, 1000);
+                        if (!hasMatch) {
+                            let tooltip = pops.tooltip({
+                                target: tdElement.querySelector("#btnDeSelect"),
+                                content: "❌ 未找到匹配记录",
+                                position: "top",
+                                alwaysShow: true,
+                            });
+                            setTimeout(() => {
+                                tooltip.close();
+                            }, 1000);
+                        }
                     }
-                });
-                DOMUtils.on(tdElement.querySelector('#btnSelect'), "mouseenter mouseleave", function (e) {
-                    let el = document.querySelector('#tabSelect');
-                    if (e.type === 'mouseleave') {
-                        el.classList.remove('x-btn-over');
-                    } else {
-                        el.classList.add('x-btn-over');
+                );
+                DOMUtils.on(
+                    tdElement.querySelector("#btnSelect"),
+                    "mouseenter mouseleave",
+                    function (e) {
+                        let el = document.querySelector("#tabSelect");
+                        if (e.type === "mouseleave") {
+                            el.classList.remove("x-btn-over");
+                        } else {
+                            el.classList.add("x-btn-over");
+                        }
                     }
-                });
-                DOMUtils.on(tdElement.querySelector('#btnDeSelect'), "mouseenter mouseleave", function (e) {
-                    let el = document.querySelector('#tabDeSelect');
-                    if (e.type === 'mouseleave') {
-                        el.classList.remove('x-btn-over');
-                    } else {
-                        el.classList.add('x-btn-over');
+                );
+                DOMUtils.on(
+                    tdElement.querySelector("#btnDeSelect"),
+                    "mouseenter mouseleave",
+                    function (e) {
+                        let el = document.querySelector("#tabDeSelect");
+                        if (e.type === "mouseleave") {
+                            el.classList.remove("x-btn-over");
+                        } else {
+                            el.classList.add("x-btn-over");
+                        }
                     }
-                });
+                );
 
                 DOMUtils.before(toolbarLeft, tdElement);
                 // Qmsg.success(`已添加关键字过滤!`, { timeout: 1500 });
-                log.success('已添加关键字勾选、取消。');
-
+                log.success("已添加关键字勾选、取消。");
             });
         },
 
         /**
-        * 物流线路优化，仅显示白名单内线路
-        */
+         * 物流线路优化，仅显示白名单内线路
+         */
         FiliterRoute() {
             /**
              * 初始化线路白名单
@@ -729,46 +798,66 @@
                     return [];
                 }
 
-                let routeList = PopsPanel.getValue("om-discussions-filter-route");
+                let routeList = PopsPanel.getValue(
+                    "om-discussions-filter-route"
+                );
                 if (!routeList) {
                     routeList = parsedData.data.map((item) => item.vrRotName);
-                    PopsPanel.setValue("om-discussions-filter-route", routeList.join('\n'));
+                    PopsPanel.setValue(
+                        "om-discussions-filter-route",
+                        routeList.join("\n")
+                    );
                 } else {
-                    routeList = routeList.split('\n');
+                    routeList = routeList.split("\n");
                 }
                 return routeList;
             }
             /**
-            * 劫持请求
-            */
+             * 劫持请求
+             */
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
                 // log.info(["ajaxHookr: ", request.url]);
                 if (
-                    request.url.startsWith("/brightdairy2/baseData/getRouteByDom")
+                    request.url.startsWith(
+                        "/brightdairy2/baseData/getRouteByDom"
+                    )
                 ) {
                     /**
-                    * 重构响应
-                    * @param {XMLHttpRequest} _request_
-                    */
+                     * 重构响应
+                     * @param {XMLHttpRequest} _request_
+                     */
                     request.response = function (_request_) {
                         try {
                             let data = utils.toJSON(_request_.responseText);
-                            if (typeof data !== 'object' || !Array.isArray(data.data)) return; // 验证data的格式
+                            if (
+                                typeof data !== "object" ||
+                                !Array.isArray(data.data)
+                            )
+                                return; // 验证data的格式
 
                             // 定义白名单 使用Set提高查找效率
-                            const whiteList = new Set(initializeRouteList(data));
+                            const whiteList = new Set(
+                                initializeRouteList(data)
+                            );
                             // 过滤数据
-                            const result = data.data.filter(item => whiteList.has(item.vrRotName));
+                            const result = data.data.filter((item) =>
+                                whiteList.has(item.vrRotName)
+                            );
 
                             // 根据白名单顺序重新排列数据
-                            const resultInOrder = Array.from(whiteList).reduce((acc, whiteItem) => {
-                                const resultItem = result.find(item => item.vrRotName === whiteItem);
-                                if (resultItem) {
-                                    acc.push(resultItem);
-                                }
-                                return acc;
-                            }, []);
+                            const resultInOrder = Array.from(whiteList).reduce(
+                                (acc, whiteItem) => {
+                                    const resultItem = result.find(
+                                        (item) => item.vrRotName === whiteItem
+                                    );
+                                    if (resultItem) {
+                                        acc.push(resultItem);
+                                    }
+                                    return acc;
+                                },
+                                []
+                            );
 
                             data.data = resultInOrder;
                             data.rows = resultInOrder;
@@ -777,7 +866,9 @@
                             _request_.responseText = JSON.stringify(data);
                         } catch (error) {
                             log.error("处理线路列表时出现错误:", error);
-                            Qmsg.error(`线路列表优化失败，请稍后再试!`, { timeout: 1500 });
+                            Qmsg.error(`线路列表优化失败，请稍后再试!`, {
+                                timeout: 1500,
+                            });
                         }
                     };
                 }
@@ -785,64 +876,99 @@
         },
 
         /**
-        * 送货点过滤，根据黑名单过滤掉不需要显示的站点
-        */
+         * 送货点过滤，根据黑名单过滤掉不需要显示的站点
+         */
         async FiliterShipToName() {
             // 初始化名单
             async function initializeRouteList() {
-                let shiptoNameList = PopsPanel.getValue("om-discussions-filter-shipto").split('\n');
+                let shiptoNameList = PopsPanel.getValue(
+                    "om-discussions-filter-shipto"
+                ).split("\n");
                 return shiptoNameList;
             }
 
             /**
              * XSS防护 - 转义HTML特殊字符
-             * @param {string} html 
+             * @param {string} html
              * @returns {string}
              */
             function escapeHTML(html) {
-                return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+                return html
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
             }
             /**
-            * 劫持请求
-            */
+             * 劫持请求
+             */
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
                 // log.info(["ajaxHookr: ", request.url]);
                 if (
-                    request.url.startsWith("/brightdairy2/deliveryNote/getByCusRouteTerr")
+                    request.url.startsWith(
+                        "/brightdairy2/deliveryNote/getByCusRouteTerr"
+                    )
                 ) {
                     /**
-                    * 重构响应
-                    * @param {XMLHttpRequest} _request_
-                    */
+                     * 重构响应
+                     * @param {XMLHttpRequest} _request_
+                     */
                     request.response = function (_request_) {
                         try {
                             let data = utils.toJSON(_request_.responseText);
                             // 使用异步获取的黑名单
-                            initializeRouteList().then(blackList => {
-                                const result = data.data.filter(item => {
-                                    // 部分匹配：item.vrSptName.includes(name)
-                                    if (!blackList.some(name => name === item.vrSptName)) {
-                                        return item;
+                            initializeRouteList()
+                                .then((blackList) => {
+                                    const result = data.data.filter((item) => {
+                                        // 部分匹配：item.vrSptName.includes(name)
+                                        if (
+                                            !blackList.some(
+                                                (name) =>
+                                                    name === item.vrSptName
+                                            )
+                                        ) {
+                                            return item;
+                                        }
+                                    });
+
+                                    if (result.length < data.data.length) {
+                                        const filteredNames = data.data
+                                            .filter((item) =>
+                                                blackList.some(
+                                                    (name) =>
+                                                        name === item.vrSptName
+                                                )
+                                            )
+                                            .map((item) => item.vrSptName);
+
+                                        const uniqueFilteredNames = Array.from(
+                                            new Set(filteredNames)
+                                        );
+                                        // 防止XSS，清理名称
+                                        const formattedNames =
+                                            uniqueFilteredNames
+                                                .map(
+                                                    (name) =>
+                                                        `<div>${escapeHTML(
+                                                            name
+                                                        )}</div>`
+                                                )
+                                                .join("");
+                                        Qmsg.info(
+                                            `已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`,
+                                            { timeout: 2000 }
+                                        );
+                                        data.data = result;
+                                        data.rows = result;
+                                        _request_.responseText =
+                                            JSON.stringify(data);
                                     }
+                                })
+                                .catch((error) => {
+                                    log.error("初始化列表失败:", error);
                                 });
-
-                                if (result.length < data.data.length) {
-                                    const filteredNames = data.data
-                                        .filter(item => blackList.some(name => name === item.vrSptName))
-                                        .map(item => item.vrSptName);
-
-                                    const uniqueFilteredNames = Array.from(new Set(filteredNames));
-                                    // 防止XSS，清理名称
-                                    const formattedNames = uniqueFilteredNames.map(name => `<div>${escapeHTML(name)}</div>`).join('');
-                                    Qmsg.info(`已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`, { timeout: 2000 });
-                                    data.data = result;
-                                    data.rows = result;
-                                    _request_.responseText = JSON.stringify(data);
-                                }
-                            }).catch(error => {
-                                log.error("初始化列表失败:", error);
-                            });
                         } catch (error) {
                             log.error("处理请求失败:", error);
                         }
@@ -852,41 +978,61 @@
         },
 
         /**
-        * 调整关闭送货单按钮位置
-        */
+         * 调整关闭送货单按钮位置
+         */
         async btnCloseLayout() {
             //utils.waitNode('div[id="ext-comp-1001"]').then(() => {
-            const btnClose = document.querySelector('#ext-comp-1068').parentNode;
-            const btnSearch = document.querySelector('#ext-comp-1063').parentNode;
+            const btnClose =
+                document.querySelector("#ext-comp-1068").parentNode;
+            const btnSearch =
+                document.querySelector("#ext-comp-1063").parentNode;
 
             DOMUtils.after(btnSearch, btnClose);
-            DOMUtils.after(btnSearch, `<td class="x-toolbar-cell"><span class="xtb-sep"></span></td>`);
+            DOMUtils.after(
+                btnSearch,
+                `<td class="x-toolbar-cell"><span class="xtb-sep"></span></td>`
+            );
             //});
         },
 
         /**
-        * 添加按产品编号排序
-        */
+         * 添加按产品编号排序
+         */
         async addSort() {
-            DOMUtils.on(document.querySelector("div.x-grid3-body"), "dblclick", function () {
-                setTimeout(function () {
-                    var hiddenElements = document.querySelectorAll("tr.x-grid3-hd-row[hidden]");
-                    hiddenElements.forEach(function (element) {
-                        var parentElement = element.closest("div[id^='ext-comp']");
-                        //Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
-                        Ext.getCmp(parentElement.id).store.singleSort('vrPdtCode', 'ASC');
-                        parentElement.querySelectorAll("tr.x-grid3-hd-row")[1].setAttribute("hidden", "");
-                        //document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-0.x-grid3-cell-first.sort-asc").parentNode.setAttribute("hidden", "");
-                    });
-                }, 200);
-            });
+            DOMUtils.on(
+                document.querySelector("div.x-grid3-body"),
+                "dblclick",
+                function () {
+                    setTimeout(function () {
+                        var hiddenElements = document.querySelectorAll(
+                            "tr.x-grid3-hd-row[hidden]"
+                        );
+                        hiddenElements.forEach(function (element) {
+                            var parentElement = element.closest(
+                                "div[id^='ext-comp']"
+                            );
+                            //Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
+                            Ext.getCmp(parentElement.id).store.singleSort(
+                                "vrPdtCode",
+                                "ASC"
+                            );
+                            parentElement
+                                .querySelectorAll("tr.x-grid3-hd-row")[1]
+                                .setAttribute("hidden", "");
+                            //document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-0.x-grid3-cell-first.sort-asc").parentNode.setAttribute("hidden", "");
+                            
+                            Ext.getCmp(parentElement.id).addListener('click', function (){console.log(11)});
+                        });
+                    }, 200);
+                }
+            );
         },
-    }
+    };
 
     const SyncSAP = {
         /**
-        * 自动推送
-        */
+         * 自动推送
+         */
         async autoSyncSAP() {
             utils.waitNode('[onclick^="addSyncCheckSAP"]').then(() => {
                 let tdElement = DOMUtils.createElement(
@@ -904,26 +1050,33 @@
             <td class="detail_content" id="timesnow"></td>
             <td class="detail_content" id="synclog"></td>
         </tr>
-    </tbody>`
+    </tbody>`,
                     },
                     {
                         style: "width: 100%;",
                     }
                 );
-                const btnSync = document.querySelector('[onclick^="addSyncCheckSAP"]');
-                const outerDiv = btnSync.closest('div');
+                const btnSync = document.querySelector(
+                    '[onclick^="addSyncCheckSAP"]'
+                );
+                const outerDiv = btnSync.closest("div");
 
                 DOMUtils.append(outerDiv, tdElement);
 
                 /**
-                * OM验单数据推送SAP
-                */
+                 * OM验单数据推送SAP
+                 */
                 async function PostData(startDate, endDate) {
                     let postResp = await httpx.post(
-                        document.location.origin + '/brightdairy2/check/addSyncCheckSAP',
+                        document.location.origin +
+                            "/brightdairy2/check/addSyncCheckSAP",
                         {
                             fetch: true,
-                            data: JSON.stringify({ "dtStart": startDate, "dtEnd": endDate, "orderType": "-1" }),
+                            data: JSON.stringify({
+                                dtStart: startDate,
+                                dtEnd: endDate,
+                                orderType: "-1",
+                            }),
                         }
                     );
                     // log.success(postResp);
@@ -952,21 +1105,26 @@
                         clearInterval(timer); // 防御性编程，确保清除之前的定时器
                         timer = setInterval(function () {
                             if (number < 10) {
-                                var startDate = document.querySelector("#d4311").value
-                                var endDate = document.querySelector("#d4312").value
+                                var startDate =
+                                    document.querySelector("#d4311").value;
+                                var endDate =
+                                    document.querySelector("#d4312").value;
                                 PostData(startDate, endDate)
-                                    .then(result => {
+                                    .then((result) => {
                                         if (result == 0) {
                                             timesNow.innerText = number;
-                                            number += 1
+                                            number += 1;
                                         } else {
-                                            number = 1
+                                            number = 1;
                                             timesNow.innerText = number;
                                         }
-                                        syncLog.innerText = `[${utils.formatTime(new Date(), "yyyy-MM-dd HH:mm:ss")}] 日期： ${startDate} 到 ${endDate} 导出记录：${result} 条`;
+                                        syncLog.innerText = `[${utils.formatTime(
+                                            new Date(),
+                                            "yyyy-MM-dd HH:mm:ss"
+                                        )}] 日期： ${startDate} 到 ${endDate} 导出记录：${result} 条`;
                                     })
-                                    .catch(error => {
-                                        number = 99
+                                    .catch((error) => {
+                                        number = 99;
                                         autosync.disabled = true;
                                         // 处理请求过程中可能发生的任何错误
                                         log.error("错误:", error);
@@ -976,18 +1134,17 @@
                                 timesNow.innerText = number;
                                 syncLog.innerText = `连续${number}次无记录推送，停止执行。`;
                             }
-                        }, Math.floor(1000 * 60 * syncInterval) + Math.random() * 10 * 1000);
+                        }, Math.floor(1000 * 60 * syncInterval) +
+                            Math.random() * 10 * 1000);
                     } catch (error) {
                         log.error("An error occurred:", error);
                     }
                 });
-
             });
         },
-    }
+    };
 
     /* -----------------↑函数区域↑----------------- */
-
 
     /* -----------------↓执行入口↓----------------- */
 
@@ -998,7 +1155,7 @@
         PopsPanel.setValue("pagesize", pageSize);
     }
 
-    if (window.location.pathname.startsWith('/modules/sap_deliveryCusReturn')) {
+    if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
         if (PopsPanel.getValue("filiterRoute")) {
             deliveryCusReturn.FiliterRoute();
         }
@@ -1030,7 +1187,7 @@
         }
     }
 
-    if (window.location.pathname.startsWith('/modules/sap_check')) {
+    if (window.location.pathname.startsWith("/modules/sap_check")) {
         if (PopsPanel.getValue("autoSyncSAP")) {
             SyncSAP.autoSyncSAP();
         }
