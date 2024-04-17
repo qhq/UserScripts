@@ -1011,17 +1011,62 @@
                             var parentElement = element.closest(
                                 "div[id^='ext-comp']"
                             );
+                            log.info(parentElement.id);
+                            const extCmp = Ext.getCmp(parentElement.id);
                             //Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
-                            Ext.getCmp(parentElement.id).store.singleSort(
-                                "vrPdtCode",
-                                "ASC"
-                            );
+                            extCmp.store.singleSort("vrPdtCode", "ASC");
                             parentElement
                                 .querySelectorAll("tr.x-grid3-hd-row")[1]
                                 .setAttribute("hidden", "");
-                            //document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-0.x-grid3-cell-first.sort-asc").parentNode.setAttribute("hidden", "");
-                            
-                            Ext.getCmp(parentElement.id).addListener('click', function (){console.log(11)});
+                            //Ext.getCmp(parentElement.id).addListener('click', function (){console.log(11)});
+
+                            extCmp.store.on({
+                                update: function () {
+                                    let lastActiveRow =
+                                        extCmp.selModel.grid.lastActiveEditor
+                                            .row;
+                                    //extCmp.store.getAt(3).getChanges()
+                                    // console.log(
+                                    //     "modified:",
+                                    //     extCmp.store.getAt(lastActiveRow)
+                                    //         .modified
+                                    // );
+                                    // console.log(
+                                    //     "getChanges:",
+                                    //     extCmp.store
+                                    //         .getAt(lastActiveRow)
+                                    //         .getChanges()
+                                    // );
+                                    // 获取第11和12个元素
+                                    var elements = extCmp
+                                        .getEl()
+                                        .dom.querySelectorAll(
+                                            "div.x-grid3-row"
+                                        )[lastActiveRow]
+                                        .querySelectorAll(
+                                            "div.x-grid3-cell-inner"
+                                        );
+
+                                    // 获取第11和12个元素的值
+                                    var value11 = elements[11].innerText; // 第11个元素的值
+                                    var value12 = elements[12].innerText; // 第12个元素的值
+
+                                    // 将值转换为数字并比较它们
+                                    var numValue11 = parseFloat(value11);
+                                    var numValue12 = parseFloat(value12);
+
+                                    // 比较两个值是否相等
+                                    if (value11 === value12) {
+                                        console.log(
+                                            "第11个元素的值等于第12个元素的值"
+                                        );
+                                    } else {
+                                        console.log(
+                                            "第11个元素的值不等于第12个元素的值"
+                                        );
+                                    }
+                                },
+                            });
                         });
                     }, 200);
                 }
