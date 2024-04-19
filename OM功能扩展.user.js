@@ -967,7 +967,7 @@
          */
         async addEventListener() {
             /*
-             * 对列进行排序
+             * 按产品编号列进行排序
              * @param {string} idDln - 单据编号
              */
             function sortColumn(idDln) {
@@ -1064,91 +1064,6 @@
                         }
                     }
                 },
-            });
-        },
-        /**
-         * 添加按产品编号排序
-         */
-        async addSort() {
-            function sortColumn(idDln) {
-                utils.waitNode(`div[id="${idDln}"]`).then((e) => {
-                    // var hiddenElements = document.querySelectorAll("tr.x-grid3-hd-row[hidden]");
-                    // hiddenElements.forEach(function (element) {
-                    //     var parentElement = element.closest("div[id^='ext-comp']"); // 数据区
-                    //     // log.info(parentElement.id);
-                    //     const extCmp = Ext.getCmp(parentElement.id);
-                    //     // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
-                    //     extCmp.store.singleSort("vrPdtCode", "ASC");
-                    //     parentElement
-                    //         .querySelectorAll("tr.x-grid3-hd-row")[1]
-                    //         .setAttribute("hidden", "");
-                    // });
-                    var element = e.querySelector("tr.x-grid3-hd-row[hidden]");
-                    var parentElement = element.closest("div[id^='ext-comp']"); // 数据区
-                    // log.info(parentElement.id);
-                    const extCmp = Ext.getCmp(parentElement.id);
-                    // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
-                    extCmp.store.singleSort("vrPdtCode", "ASC");
-                    parentElement.querySelectorAll("tr.x-grid3-hd-row")[1].setAttribute("hidden", "");
-                });
-            }
-        },
-
-        /**
-         * 自动选择取消原因
-         */
-        async autoSelectCra() {
-            utils.waitNode("div.x-layer.x-editor.x-small-editor.x-grid-editor").then(() => {
-                setTimeout(function () {
-                    var hiddenElements = document.querySelectorAll("tr.x-grid3-hd-row[hidden]");
-                    hiddenElements.forEach(function (element) {
-                        var tabElement = element.closest("div.x-panel.x-panel-noborder"); // id=提货单号的tab
-                        var parentElement = element.closest("div[id^='ext-comp']"); // 数据区
-                        // log.info(parentElement.id);
-                        const panelCmp = Ext.getCmp(tabElement.id);
-                        const extCmp = Ext.getCmp(parentElement.id);
-                        // Ext.getCmp(parentElement.id).addListener('click', function (){console.log(this)});
-                        panelCmp.deliveryLineGrid.store.on({
-                            doUpdate: function () {
-                                log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
-                                var lastActiveRow = extCmp.selModel.grid.lastActiveEditor.row;
-                                var cancelReasonId = PopsPanel.getValue("cancelreason-selector");
-                                if (cancelReasonId == 0) {
-                                    // 未选择取消原因，不处理
-                                    return;
-                                }
-                                var cancelReasonName = craData.find((item) => item.value === cancelReasonId).text;
-                                // extCmp.store.getAt(3).getChanges()
-                                // console.log("modified:",extCmp.store.getAt(lastActiveRow).modified);
-                                // console.log("getChanges:",extCmp.store.getAt(lastActiveRow).getChanges());
-
-                                var elements = extCmp
-                                    .getEl()
-                                    .dom.querySelectorAll("div.x-grid3-row")
-                                    [lastActiveRow].querySelectorAll("div.x-grid3-cell-inner");
-                                var extStoreData = extCmp.store.data.items[lastActiveRow].data;
-
-                                var iDnlRealshipQty = extStoreData.iDnlRealshipQty; // 实际发货数量
-                                var fDnlRealprice = extStoreData.fDnlRealprice; // 实际发货单价
-
-                                var newMoney = parseFloat(elements[11].innerText).toFixed(2);
-                                var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
-
-                                if (newMoney == oldMoney) {
-                                    elements[15].innerText = " ";
-                                    panelCmp.deliveryLineGrid.store.data.items[
-                                        lastActiveRow
-                                    ].data.iDnlCancelreasonId = 0;
-                                    panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.vrCraName = "";
-                                } else if (elements[15].innerText == " ") {
-                                    elements[15].innerText = cancelReasonName;
-                                    panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.iDnlCancelreasonId =
-                                        cancelReasonId;
-                                }
-                            },
-                        });
-                    });
-                }, 200);
             });
         },
     };
