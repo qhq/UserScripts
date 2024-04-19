@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240416.2332
+// @version      20240419.0922
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -24,7 +24,7 @@
 // @updateURL    https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
 
-(function () {
+(async function () {
     if (typeof unsafeWindow === "undefined") {
         unsafeWindow = globalThis || window;
     }
@@ -73,6 +73,46 @@
             log.error(["httpx-onerror", response]);
         },
     });
+
+    /**
+     * api
+     */
+    const OmApi = {
+        /**
+         * 获取取消原因列表
+         */
+        async getCancelReason() {
+            function formatCancelReasons(data) {
+                return data.map((item) => ({
+                    value: item.idCra,
+                    text: item.vrCraName,
+                }));
+            }
+            return new Promise(async (resolve) => {
+                const dc = Math.floor(new Date().getTime() / 1000);
+                let CancelReason = await httpx.get({
+                    url:
+                        `${document.location.origin}/brightdairy2/baseData/getCancelReason?_dc=` +
+                        dc,
+                    fetch: true,
+                    responseType: "json",
+                });
+                if (!CancelReason.status) {
+                    resolve([]);
+                    return;
+                }
+                let CancelReasonJSON = utils.toJSON(CancelReason.data.responseText);
+                let result = [];
+                try {
+                    result = result.concat(formatCancelReasons(CancelReasonJSON.data));
+                } catch (error) {
+                    console.error("Error fetching cancel reasons:", error);
+                    // 根据需求处理错误
+                }
+                resolve(result);
+            });
+        },
+    };
 
     /**
      * GreasyFork的css
@@ -178,14 +218,9 @@
                             if (!containerItem.attributes) {
                                 return;
                             }
-                            let key =
-                                containerItem.attributes[
-                                    this.attributeDataKey_Name
-                                ];
+                            let key = containerItem.attributes[this.attributeDataKey_Name];
                             let defaultValue =
-                                containerItem.attributes[
-                                    this.attributeDataDefaultValue_Name
-                                ];
+                                containerItem.attributes[this.attributeDataDefaultValue_Name];
                             if (this.getValue(key) == null) {
                                 this.setValue(key, defaultValue);
                             }
@@ -278,8 +313,7 @@
                 },
             };
             result.attributes[this.attributeDataKey_Name] = key;
-            result.attributes[this.attributeDataDefaultValue_Name] =
-                Boolean(defaultValue);
+            result.attributes[this.attributeDataDefaultValue_Name] = Boolean(defaultValue);
             return result;
         },
         /**
@@ -306,16 +340,11 @@
                                     getValue() {
                                         return PopsPanel.getValue(
                                             this.attributes["data-key"],
-                                            this.attributes[
-                                                "data-default-value"
-                                            ]
+                                            this.attributes["data-default-value"]
                                         );
                                     },
                                     callback(event, value) {
-                                        PopsPanel.setValue(
-                                            this.attributes["data-key"],
-                                            value
-                                        );
+                                        PopsPanel.setValue(this.attributes["data-key"], value);
                                     },
                                     placeholder: "请输入分页大小",
                                 },
@@ -353,18 +382,48 @@
                                     getValue() {
                                         return PopsPanel.getValue(
                                             this.attributes["data-key"],
-                                            this.attributes[
-                                                "data-default-value"
-                                            ]
+                                            this.attributes["data-default-value"]
                                         );
                                     },
                                     callback(event, value) {
-                                        PopsPanel.setValue(
-                                            this.attributes["data-key"],
-                                            value
-                                        );
+                                        PopsPanel.setValue(this.attributes["data-key"], value);
                                     },
                                     placeholder: "请输入推送时间间隔",
+                                },
+                                {
+                                    text: "自动填写取消原因",
+                                    type: "select",
+                                    attributes: {
+                                        "data-key": "cancelreason-selector",
+                                        "data-default-value": 0,
+                                    },
+                                    getValue() {
+                                        return PopsPanel.getValue(
+                                            this.attributes["data-key"],
+                                            this.attributes["data-default-value"]
+                                        );
+                                    },
+                                    callback(event, isSelectedValue, isSelectedText) {
+                                        PopsPanel.setValue(
+                                            this.attributes["data-key"],
+                                            isSelectedValue
+                                        );
+                                    },
+                                    data: (function () {
+                                        let result = [
+                                            {
+                                                value: 0,
+                                                text: "无",
+                                            },
+                                        ];
+                                        craData.forEach((item) => {
+                                            result.push({
+                                                value: item.value,
+                                                text: item.text,
+                                            });
+                                        });
+                                        return result;
+                                    })(),
                                 },
                             ],
                         },
@@ -393,37 +452,25 @@
                                 {
                                     type: "own",
                                     getLiElementCallBack(liElement) {
-                                        let textareaDiv =
-                                            DOMUtils.createElement(
-                                                "div",
-                                                {
-                                                    className:
-                                                        "pops-panel-textarea",
-                                                    innerHTML: `<textarea placeholder="请输入需要过滤掉的网点名称，每行一个" style="height:150px;"></textarea>`,
-                                                },
-                                                {
-                                                    style: "width: 100%;",
-                                                }
-                                            );
-                                        let textarea =
-                                            textareaDiv.querySelector(
-                                                "textarea"
-                                            );
-                                        const KEY =
-                                            "om-discussions-filter-shipto";
-                                        textarea.value = PopsPanel.getValue(
-                                            KEY,
-                                            ""
+                                        let textareaDiv = DOMUtils.createElement(
+                                            "div",
+                                            {
+                                                className: "pops-panel-textarea",
+                                                innerHTML: `<textarea placeholder="请输入需要过滤掉的网点名称，每行一个" style="height:150px;"></textarea>`,
+                                            },
+                                            {
+                                                style: "width: 100%;",
+                                            }
                                         );
+                                        let textarea = textareaDiv.querySelector("textarea");
+                                        const KEY = "om-discussions-filter-shipto";
+                                        textarea.value = PopsPanel.getValue(KEY, "");
                                         DOMUtils.on(
                                             textarea,
                                             ["input", "propertychange"],
                                             void 0,
                                             utils.debounce(function (event) {
-                                                PopsPanel.setValue(
-                                                    KEY,
-                                                    textarea.value
-                                                );
+                                                PopsPanel.setValue(KEY, textarea.value);
                                             }, 200)
                                         );
                                         liElement.appendChild(textareaDiv);
@@ -451,37 +498,25 @@
                                 {
                                     type: "own",
                                     getLiElementCallBack(liElement) {
-                                        let textareaDiv =
-                                            DOMUtils.createElement(
-                                                "div",
-                                                {
-                                                    className:
-                                                        "pops-panel-textarea",
-                                                    innerHTML: `<textarea placeholder="请输入线路名称，每行一个\n留空获取默认线路" style="height:150px;"></textarea>`,
-                                                },
-                                                {
-                                                    style: "width: 100%;",
-                                                }
-                                            );
-                                        let textarea =
-                                            textareaDiv.querySelector(
-                                                "textarea"
-                                            );
-                                        const KEY =
-                                            "om-discussions-filter-route";
-                                        textarea.value = PopsPanel.getValue(
-                                            KEY,
-                                            ""
+                                        let textareaDiv = DOMUtils.createElement(
+                                            "div",
+                                            {
+                                                className: "pops-panel-textarea",
+                                                innerHTML: `<textarea placeholder="请输入线路名称，每行一个\n留空获取默认线路" style="height:150px;"></textarea>`,
+                                            },
+                                            {
+                                                style: "width: 100%;",
+                                            }
                                         );
+                                        let textarea = textareaDiv.querySelector("textarea");
+                                        const KEY = "om-discussions-filter-route";
+                                        textarea.value = PopsPanel.getValue(KEY, "");
                                         DOMUtils.on(
                                             textarea,
                                             ["input", "propertychange"],
                                             void 0,
                                             utils.debounce(function (event) {
-                                                PopsPanel.setValue(
-                                                    KEY,
-                                                    textarea.value
-                                                );
+                                                PopsPanel.setValue(KEY, textarea.value);
                                             }, 200)
                                         );
                                         liElement.appendChild(textareaDiv);
@@ -545,6 +580,8 @@
         });
     };
 
+    const initData = {};
+
     const deliveryCusReturn = {
         /**
          * 线路选择联动，选中开始线路，同步选中结束线路
@@ -580,9 +617,7 @@
          */
         async changePageSize(pageSize = 20) {
             utils.waitNode('input[id="ext-comp-1005"]').then(() => {
-                const pageElement = document.querySelector(
-                    'input[id="ext-comp-1005"]'
-                );
+                const pageElement = document.querySelector('input[id="ext-comp-1005"]');
                 if (pageElement) {
                     pageElement.value = pageSize;
                     Ext.getCmp("ext-comp-1004").pageSize = pageSize;
@@ -596,8 +631,7 @@
          */
         async FilterKeywords() {
             utils.waitNode('input[id="ext-comp-1005"]').then(() => {
-                const toolbarLeft =
-                    document.querySelectorAll(".x-toolbar-left")[2];
+                const toolbarLeft = document.querySelectorAll(".x-toolbar-left")[2];
                 let inputKeywords = DOMUtils.createElement(
                     "input",
                     {
@@ -685,74 +719,56 @@
                     }
                 );
                 /* 添加事件 */
-                DOMUtils.on(
-                    tdElement.querySelector("#btnSelect"),
-                    "click",
-                    function () {
-                        var extComp = Ext.getCmp("ext-comp-1003");
-                        var searchText =
-                            tdElement.querySelector("#inputKeywords").value;
-                        var gridElement =
-                            document.querySelector(".x-grid3-body");
-                        var childElements =
-                            gridElement.querySelectorAll(":scope > div");
-                        let hasMatch = false; // 添加变量进行判断
-                        childElements.forEach(function (element) {
-                            if (element.textContent.includes(searchText)) {
-                                hasMatch = true; // 如果找到匹配记录，将变量设置为 true
-                                extComp
-                                    .getSelectionModel()
-                                    .selectRow(element.rowIndex, true);
-                            }
-                        });
-                        if (!hasMatch) {
-                            let tooltip = pops.tooltip({
-                                target: tdElement.querySelector("#btnSelect"),
-                                content: "❌ 未找到匹配记录",
-                                position: "top",
-                                alwaysShow: true,
-                            });
-                            setTimeout(() => {
-                                tooltip.close();
-                            }, 1000);
+                DOMUtils.on(tdElement.querySelector("#btnSelect"), "click", function () {
+                    var extComp = Ext.getCmp("ext-comp-1003");
+                    var searchText = tdElement.querySelector("#inputKeywords").value;
+                    var gridElement = document.querySelector(".x-grid3-body");
+                    var childElements = gridElement.querySelectorAll(":scope > div");
+                    let hasMatch = false; // 添加变量进行判断
+                    childElements.forEach(function (element) {
+                        if (element.textContent.includes(searchText)) {
+                            hasMatch = true; // 如果找到匹配记录，将变量设置为 true
+                            extComp.getSelectionModel().selectRow(element.rowIndex, true);
                         }
-                    }
-                );
-                DOMUtils.on(
-                    tdElement.querySelector("#btnDeSelect"),
-                    "click",
-                    function () {
-                        var extComp = Ext.getCmp("ext-comp-1003");
-                        var searchText =
-                            tdElement.querySelector("#inputKeywords").value;
-                        var gridElement =
-                            document.querySelector(".x-grid3-body");
-                        var childElements =
-                            gridElement.querySelectorAll(":scope > div");
-                        let hasMatch = false; // 添加变量进行判断
-                        childElements.forEach(function (element) {
-                            if (element.textContent.includes(searchText)) {
-                                hasMatch = true; // 如果找到匹配记录，将变量设置为 true
-                                // console.log(element.rowIndex)
-                                // element.classList.add('x-grid3-row-selected');
-                                extComp
-                                    .getSelectionModel()
-                                    .deselectRow(element.rowIndex);
-                            }
+                    });
+                    if (!hasMatch) {
+                        let tooltip = pops.tooltip({
+                            target: tdElement.querySelector("#btnSelect"),
+                            content: "❌ 未找到匹配记录",
+                            position: "top",
+                            alwaysShow: true,
                         });
-                        if (!hasMatch) {
-                            let tooltip = pops.tooltip({
-                                target: tdElement.querySelector("#btnDeSelect"),
-                                content: "❌ 未找到匹配记录",
-                                position: "top",
-                                alwaysShow: true,
-                            });
-                            setTimeout(() => {
-                                tooltip.close();
-                            }, 1000);
-                        }
+                        setTimeout(() => {
+                            tooltip.close();
+                        }, 1000);
                     }
-                );
+                });
+                DOMUtils.on(tdElement.querySelector("#btnDeSelect"), "click", function () {
+                    var extComp = Ext.getCmp("ext-comp-1003");
+                    var searchText = tdElement.querySelector("#inputKeywords").value;
+                    var gridElement = document.querySelector(".x-grid3-body");
+                    var childElements = gridElement.querySelectorAll(":scope > div");
+                    let hasMatch = false; // 添加变量进行判断
+                    childElements.forEach(function (element) {
+                        if (element.textContent.includes(searchText)) {
+                            hasMatch = true; // 如果找到匹配记录，将变量设置为 true
+                            // console.log(element.rowIndex)
+                            // element.classList.add('x-grid3-row-selected');
+                            extComp.getSelectionModel().deselectRow(element.rowIndex);
+                        }
+                    });
+                    if (!hasMatch) {
+                        let tooltip = pops.tooltip({
+                            target: tdElement.querySelector("#btnDeSelect"),
+                            content: "❌ 未找到匹配记录",
+                            position: "top",
+                            alwaysShow: true,
+                        });
+                        setTimeout(() => {
+                            tooltip.close();
+                        }, 1000);
+                    }
+                });
                 DOMUtils.on(
                     tdElement.querySelector("#btnSelect"),
                     "mouseenter mouseleave",
@@ -798,15 +814,10 @@
                     return [];
                 }
 
-                let routeList = PopsPanel.getValue(
-                    "om-discussions-filter-route"
-                );
+                let routeList = PopsPanel.getValue("om-discussions-filter-route");
                 if (!routeList) {
                     routeList = parsedData.data.map((item) => item.vrRotName);
-                    PopsPanel.setValue(
-                        "om-discussions-filter-route",
-                        routeList.join("\n")
-                    );
+                    PopsPanel.setValue("om-discussions-filter-route", routeList.join("\n"));
                 } else {
                     routeList = routeList.split("\n");
                 }
@@ -818,11 +829,7 @@
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
                 // log.info(["ajaxHookr: ", request.url]);
-                if (
-                    request.url.startsWith(
-                        "/brightdairy2/baseData/getRouteByDom"
-                    )
-                ) {
+                if (request.url.startsWith("/brightdairy2/baseData/getRouteByDom")) {
                     /**
                      * 重构响应
                      * @param {XMLHttpRequest} _request_
@@ -830,34 +837,25 @@
                     request.response = function (_request_) {
                         try {
                             let data = utils.toJSON(_request_.responseText);
-                            if (
-                                typeof data !== "object" ||
-                                !Array.isArray(data.data)
-                            )
-                                return; // 验证data的格式
+                            if (typeof data !== "object" || !Array.isArray(data.data)) return; // 验证data的格式
 
                             // 定义白名单 使用Set提高查找效率
-                            const whiteList = new Set(
-                                initializeRouteList(data)
-                            );
+                            const whiteList = new Set(initializeRouteList(data));
                             // 过滤数据
                             const result = data.data.filter((item) =>
                                 whiteList.has(item.vrRotName)
                             );
 
                             // 根据白名单顺序重新排列数据
-                            const resultInOrder = Array.from(whiteList).reduce(
-                                (acc, whiteItem) => {
-                                    const resultItem = result.find(
-                                        (item) => item.vrRotName === whiteItem
-                                    );
-                                    if (resultItem) {
-                                        acc.push(resultItem);
-                                    }
-                                    return acc;
-                                },
-                                []
-                            );
+                            const resultInOrder = Array.from(whiteList).reduce((acc, whiteItem) => {
+                                const resultItem = result.find(
+                                    (item) => item.vrRotName === whiteItem
+                                );
+                                if (resultItem) {
+                                    acc.push(resultItem);
+                                }
+                                return acc;
+                            }, []);
 
                             data.data = resultInOrder;
                             data.rows = resultInOrder;
@@ -881,9 +879,7 @@
         async FiliterShipToName() {
             // 初始化名单
             async function initializeRouteList() {
-                let shiptoNameList = PopsPanel.getValue(
-                    "om-discussions-filter-shipto"
-                ).split("\n");
+                let shiptoNameList = PopsPanel.getValue("om-discussions-filter-shipto").split("\n");
                 return shiptoNameList;
             }
 
@@ -906,11 +902,7 @@
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
                 // log.info(["ajaxHookr: ", request.url]);
-                if (
-                    request.url.startsWith(
-                        "/brightdairy2/deliveryNote/getByCusRouteTerr"
-                    )
-                ) {
+                if (request.url.startsWith("/brightdairy2/deliveryNote/getByCusRouteTerr")) {
                     /**
                      * 重构响应
                      * @param {XMLHttpRequest} _request_
@@ -923,12 +915,7 @@
                                 .then((blackList) => {
                                     const result = data.data.filter((item) => {
                                         // 部分匹配：item.vrSptName.includes(name)
-                                        if (
-                                            !blackList.some(
-                                                (name) =>
-                                                    name === item.vrSptName
-                                            )
-                                        ) {
+                                        if (!blackList.some((name) => name === item.vrSptName)) {
                                             return item;
                                         }
                                     });
@@ -936,10 +923,7 @@
                                     if (result.length < data.data.length) {
                                         const filteredNames = data.data
                                             .filter((item) =>
-                                                blackList.some(
-                                                    (name) =>
-                                                        name === item.vrSptName
-                                                )
+                                                blackList.some((name) => name === item.vrSptName)
                                             )
                                             .map((item) => item.vrSptName);
 
@@ -947,23 +931,16 @@
                                             new Set(filteredNames)
                                         );
                                         // 防止XSS，清理名称
-                                        const formattedNames =
-                                            uniqueFilteredNames
-                                                .map(
-                                                    (name) =>
-                                                        `<div>${escapeHTML(
-                                                            name
-                                                        )}</div>`
-                                                )
-                                                .join("");
+                                        const formattedNames = uniqueFilteredNames
+                                            .map((name) => `<div>${escapeHTML(name)}</div>`)
+                                            .join("");
                                         Qmsg.info(
                                             `已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`,
                                             { timeout: 2000 }
                                         );
                                         data.data = result;
                                         data.rows = result;
-                                        _request_.responseText =
-                                            JSON.stringify(data);
+                                        _request_.responseText = JSON.stringify(data);
                                     }
                                 })
                                 .catch((error) => {
@@ -982,10 +959,8 @@
          */
         async btnCloseLayout() {
             //utils.waitNode('div[id="ext-comp-1001"]').then(() => {
-            const btnClose =
-                document.querySelector("#ext-comp-1068").parentNode;
-            const btnSearch =
-                document.querySelector("#ext-comp-1063").parentNode;
+            const btnClose = document.querySelector("#ext-comp-1068").parentNode;
+            const btnSearch = document.querySelector("#ext-comp-1063").parentNode;
 
             DOMUtils.after(btnSearch, btnClose);
             DOMUtils.after(
@@ -999,78 +974,67 @@
          * 添加按产品编号排序
          */
         async addSort() {
-            DOMUtils.on(
-                document.querySelector("div.x-grid3-body"),
-                "dblclick",
-                function () {
-                    setTimeout(function () {
-                        var hiddenElements = document.querySelectorAll(
-                            "tr.x-grid3-hd-row[hidden]"
-                        );
-                        hiddenElements.forEach(function (element) {
-                            var parentElement = element.closest(
-                                "div[id^='ext-comp']"
-                            );
-                            log.info(parentElement.id);
-                            const extCmp = Ext.getCmp(parentElement.id);
-                            //Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
-                            extCmp.store.singleSort("vrPdtCode", "ASC");
-                            parentElement
-                                .querySelectorAll("tr.x-grid3-hd-row")[1]
-                                .setAttribute("hidden", "");
-                            //Ext.getCmp(parentElement.id).addListener('click', function (){console.log(11)});
+            DOMUtils.on(document.querySelector("div.x-grid3-body"), "dblclick", function () {
+                setTimeout(function () {
+                    var hiddenElements = document.querySelectorAll("tr.x-grid3-hd-row[hidden]");
+                    hiddenElements.forEach(function (element) {
+                        var tabElement = element.closest("div.x-panel.x-panel-noborder"); // id=提货单号的tab
+                        var parentElement = element.closest("div[id^='ext-comp']"); // 数据区
+                        // log.info(parentElement.id);
+                        const panelCmp = Ext.getCmp(tabElement.id);
+                        const extCmp = Ext.getCmp(parentElement.id);
+                        // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
+                        extCmp.store.singleSort("vrPdtCode", "ASC");
+                        parentElement
+                            .querySelectorAll("tr.x-grid3-hd-row")[1]
+                            .setAttribute("hidden", "");
+                        // Ext.getCmp(parentElement.id).addListener('click', function (){console.log(this)});
 
-                            extCmp.store.on({
-                                update: function () {
-                                    let lastActiveRow =
-                                        extCmp.selModel.grid.lastActiveEditor
-                                            .row;
-                                    //extCmp.store.getAt(3).getChanges()
-                                    // console.log(
-                                    //     "modified:",
-                                    //     extCmp.store.getAt(lastActiveRow)
-                                    //         .modified
-                                    // );
-                                    // console.log(
-                                    //     "getChanges:",
-                                    //     extCmp.store
-                                    //         .getAt(lastActiveRow)
-                                    //         .getChanges()
-                                    // );
-                                    // 获取第11和12个元素
-                                    var elements = extCmp
-                                        .getEl()
-                                        .dom.querySelectorAll(
-                                            "div.x-grid3-row"
-                                        )[lastActiveRow]
-                                        .querySelectorAll(
-                                            "div.x-grid3-cell-inner"
-                                        );
+                        extCmp.store.on({
+                            update: function () {
+                                // log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
+                                var lastActiveRow = extCmp.selModel.grid.lastActiveEditor.row;
+                                var cancelReasonId = PopsPanel.getValue('cancelreason-selector');
+                                if (cancelReasonId == 0) {
+                                    // 未选择取消原因，不处理
+                                    return;
+                                }
+                                var cancelReasonName =  craData.find(item => item.value === cancelReasonId).text;
+                                // extCmp.store.getAt(3).getChanges()
+                                // console.log("modified:",extCmp.store.getAt(lastActiveRow).modified);
+                                // console.log("getChanges:",extCmp.store.getAt(lastActiveRow).getChanges());
 
-                                    // 获取第11和12个元素的值
-                                    var value11 = elements[11].innerText; // 第11个元素的值
-                                    var value12 = elements[12].innerText; // 第12个元素的值
+                                var elements = extCmp
+                                    .getEl()
+                                    .dom.querySelectorAll("div.x-grid3-row")
+                                    [lastActiveRow].querySelectorAll("div.x-grid3-cell-inner");
+                                var extStoreData = extCmp.store.data.items[lastActiveRow].data;
 
-                                    // 将值转换为数字并比较它们
-                                    var numValue11 = parseFloat(value11);
-                                    var numValue12 = parseFloat(value12);
+                                var iDnlRealshipQty = extStoreData.iDnlRealshipQty; // 实际发货数量
+                                var fDnlRealprice = extStoreData.fDnlRealprice; // 实际发货单价
 
-                                    // 比较两个值是否相等
-                                    if (value11 === value12) {
-                                        console.log(
-                                            "第11个元素的值等于第12个元素的值"
-                                        );
-                                    } else {
-                                        console.log(
-                                            "第11个元素的值不等于第12个元素的值"
-                                        );
-                                    }
-                                },
-                            });
+                                var newMoney = parseFloat(elements[11].innerText).toFixed(2);
+                                var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
+
+                                if (newMoney == oldMoney) {
+                                    elements[15].innerText = " ";
+                                    panelCmp.deliveryLineGrid.store.data.items[
+                                        lastActiveRow
+                                    ].data.iDnlCancelreasonId = 0;
+                                    panelCmp.deliveryLineGrid.store.data.items[
+                                        lastActiveRow
+                                    ].data.vrCraName = "";
+                                } else if (elements[15].innerText == " ") {
+                                    elements[15].innerText = cancelReasonName;
+                                    panelCmp.deliveryLineGrid.store.data.items[
+                                        lastActiveRow
+                                    ].data.iDnlCancelreasonId = cancelReasonId;
+                                }
+                            },
                         });
-                    }, 200);
-                }
-            );
+                    });
+                }, 200);
+            });
         },
     };
 
@@ -1101,9 +1065,7 @@
                         style: "width: 100%;",
                     }
                 );
-                const btnSync = document.querySelector(
-                    '[onclick^="addSyncCheckSAP"]'
-                );
+                const btnSync = document.querySelector('[onclick^="addSyncCheckSAP"]');
                 const outerDiv = btnSync.closest("div");
 
                 DOMUtils.append(outerDiv, tdElement);
@@ -1113,8 +1075,7 @@
                  */
                 async function PostData(startDate, endDate) {
                     let postResp = await httpx.post(
-                        document.location.origin +
-                            "/brightdairy2/check/addSyncCheckSAP",
+                        document.location.origin + "/brightdairy2/check/addSyncCheckSAP",
                         {
                             fetch: true,
                             data: JSON.stringify({
@@ -1150,10 +1111,8 @@
                         clearInterval(timer); // 防御性编程，确保清除之前的定时器
                         timer = setInterval(function () {
                             if (number < 10) {
-                                var startDate =
-                                    document.querySelector("#d4311").value;
-                                var endDate =
-                                    document.querySelector("#d4312").value;
+                                var startDate = document.querySelector("#d4311").value;
+                                var endDate = document.querySelector("#d4312").value;
                                 PostData(startDate, endDate)
                                     .then((result) => {
                                         if (result == 0) {
@@ -1179,8 +1138,7 @@
                                 timesNow.innerText = number;
                                 syncLog.innerText = `连续${number}次无记录推送，停止执行。`;
                             }
-                        }, Math.floor(1000 * 60 * syncInterval) +
-                            Math.random() * 10 * 1000);
+                        }, Math.floor(1000 * 60 * syncInterval) + Math.random() * 10 * 1000);
                     } catch (error) {
                         log.error("An error occurred:", error);
                     }
@@ -1192,8 +1150,10 @@
     /* -----------------↑函数区域↑----------------- */
 
     /* -----------------↓执行入口↓----------------- */
+    const craData = await OmApi.getCancelReason();
 
     PopsPanel.initMenu();
+
     let pageSize = PopsPanel.getValue("pagesize");
     if (!pageSize) {
         pageSize = 20;
