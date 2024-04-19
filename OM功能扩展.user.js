@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240419.0922
+// @version      20240419.2023
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -20,8 +20,8 @@
 // @require      https://update.greasyfork.org/scripts/456485/1357649/pops.js
 // @require      https://update.greasyfork.org/scripts/455186/1355010/WhiteSevsUtils.js
 // @require      https://update.greasyfork.org/scripts/465772/1344519/DOMUtils.js
-// @downloadURL  https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
-// @updateURL    https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
+// @updateURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
 
 (async function () {
@@ -91,9 +91,7 @@
             return new Promise(async (resolve) => {
                 const dc = Math.floor(new Date().getTime() / 1000);
                 let CancelReason = await httpx.get({
-                    url:
-                        `${document.location.origin}/brightdairy2/baseData/getCancelReason?_dc=` +
-                        dc,
+                    url: `${document.location.origin}/brightdairy2/baseData/getCancelReason?_dc=` + dc,
                     fetch: true,
                     responseType: "json",
                 });
@@ -219,8 +217,7 @@
                                 return;
                             }
                             let key = containerItem.attributes[this.attributeDataKey_Name];
-                            let defaultValue =
-                                containerItem.attributes[this.attributeDataDefaultValue_Name];
+                            let defaultValue = containerItem.attributes[this.attributeDataDefaultValue_Name];
                             if (this.getValue(key) == null) {
                                 this.setValue(key, defaultValue);
                             }
@@ -335,7 +332,7 @@
                                     type: "input",
                                     attributes: {
                                         "data-key": "pagesize",
-                                        "data-default-value": "20",
+                                        "data-default-value": 20,
                                     },
                                     getValue() {
                                         return PopsPanel.getValue(
@@ -344,7 +341,17 @@
                                         );
                                     },
                                     callback(event, value) {
-                                        PopsPanel.setValue(this.attributes["data-key"], value);
+                                        // 验证输入值范围
+                                        if (value >= 1 && value <= 500) {
+                                            PopsPanel.setValue(this.attributes["data-key"], value);
+                                        } else {
+                                            // 如果超出范围，使用默认值
+                                            Qmsg.warning("分页大小范围为1-500", { timeout: 1000 });
+                                            PopsPanel.setValue(
+                                                this.attributes["data-key"],
+                                                this.attributes["data-default-value"]
+                                            );
+                                        }
                                     },
                                     placeholder: "请输入分页大小",
                                 },
@@ -404,10 +411,7 @@
                                         );
                                     },
                                     callback(event, isSelectedValue, isSelectedText) {
-                                        PopsPanel.setValue(
-                                            this.attributes["data-key"],
-                                            isSelectedValue
-                                        );
+                                        PopsPanel.setValue(this.attributes["data-key"], isSelectedValue);
                                     },
                                     data: (function () {
                                         let result = [
@@ -483,12 +487,7 @@
                             text: "",
                             type: "forms",
                             forms: [
-                                PopsPanel.getSwtichDetail(
-                                    "线路优化",
-                                    "仅显示列表中的线路选项",
-                                    "filiterroute",
-                                    true
-                                ),
+                                PopsPanel.getSwtichDetail("线路优化", "仅显示列表中的线路选项", "filiterroute", true),
                             ],
                         },
                         {
@@ -580,25 +579,15 @@
         });
     };
 
-    const initData = {};
-
     const deliveryCusReturn = {
         /**
          * 线路选择联动，选中开始线路，同步选中结束线路
          */
         async LinkRotName() {
             utils.waitNode('input[name="startRotName"]').then(() => {
-                const startRotNamCmp = document.querySelector(
-                    'input[name="startRotName"]'
-                ).nextSibling;
-                const endRotNameCmp = document.querySelector(
-                    'input[name="endRotName"]'
-                ).nextSibling;
-                if (
-                    startRotNamCmp &&
-                    endRotNameCmp &&
-                    !startRotNamCmp.classList.contains("eventListenerAdded")
-                ) {
+                const startRotNamCmp = document.querySelector('input[name="startRotName"]').nextSibling;
+                const endRotNameCmp = document.querySelector('input[name="endRotName"]').nextSibling;
+                if (startRotNamCmp && endRotNameCmp && !startRotNamCmp.classList.contains("eventListenerAdded")) {
                     startRotNamCmp.addEventListener("focus", function () {
                         endRotNameCmp.value = this.value;
                         var component = Ext.getCmp(endRotNameCmp.id);
@@ -769,30 +758,22 @@
                         }, 1000);
                     }
                 });
-                DOMUtils.on(
-                    tdElement.querySelector("#btnSelect"),
-                    "mouseenter mouseleave",
-                    function (e) {
-                        let el = document.querySelector("#tabSelect");
-                        if (e.type === "mouseleave") {
-                            el.classList.remove("x-btn-over");
-                        } else {
-                            el.classList.add("x-btn-over");
-                        }
+                DOMUtils.on(tdElement.querySelector("#btnSelect"), "mouseenter mouseleave", function (e) {
+                    let el = document.querySelector("#tabSelect");
+                    if (e.type === "mouseleave") {
+                        el.classList.remove("x-btn-over");
+                    } else {
+                        el.classList.add("x-btn-over");
                     }
-                );
-                DOMUtils.on(
-                    tdElement.querySelector("#btnDeSelect"),
-                    "mouseenter mouseleave",
-                    function (e) {
-                        let el = document.querySelector("#tabDeSelect");
-                        if (e.type === "mouseleave") {
-                            el.classList.remove("x-btn-over");
-                        } else {
-                            el.classList.add("x-btn-over");
-                        }
+                });
+                DOMUtils.on(tdElement.querySelector("#btnDeSelect"), "mouseenter mouseleave", function (e) {
+                    let el = document.querySelector("#tabDeSelect");
+                    if (e.type === "mouseleave") {
+                        el.classList.remove("x-btn-over");
+                    } else {
+                        el.classList.add("x-btn-over");
                     }
-                );
+                });
 
                 DOMUtils.before(toolbarLeft, tdElement);
                 // Qmsg.success(`已添加关键字过滤!`, { timeout: 1500 });
@@ -828,8 +809,11 @@
              */
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
-                // log.info(["ajaxHookr: ", request.url]);
-                if (request.url.startsWith("/brightdairy2/baseData/getRouteByDom")) {
+                // log.info({ ajaxHookr: request.url });
+                if (
+                    request.url.startsWith("/brightdairy2/baseData/getRouteByDom") &&
+                    PopsPanel.getValue("filiterRoute")
+                ) {
                     /**
                      * 重构响应
                      * @param {XMLHttpRequest} _request_
@@ -842,15 +826,11 @@
                             // 定义白名单 使用Set提高查找效率
                             const whiteList = new Set(initializeRouteList(data));
                             // 过滤数据
-                            const result = data.data.filter((item) =>
-                                whiteList.has(item.vrRotName)
-                            );
+                            const result = data.data.filter((item) => whiteList.has(item.vrRotName));
 
                             // 根据白名单顺序重新排列数据
                             const resultInOrder = Array.from(whiteList).reduce((acc, whiteItem) => {
-                                const resultItem = result.find(
-                                    (item) => item.vrRotName === whiteItem
-                                );
+                                const resultItem = result.find((item) => item.vrRotName === whiteItem);
                                 if (resultItem) {
                                     acc.push(resultItem);
                                 }
@@ -922,14 +902,10 @@
 
                                     if (result.length < data.data.length) {
                                         const filteredNames = data.data
-                                            .filter((item) =>
-                                                blackList.some((name) => name === item.vrSptName)
-                                            )
+                                            .filter((item) => blackList.some((name) => name === item.vrSptName))
                                             .map((item) => item.vrSptName);
 
-                                        const uniqueFilteredNames = Array.from(
-                                            new Set(filteredNames)
-                                        );
+                                        const uniqueFilteredNames = Array.from(new Set(filteredNames));
                                         // 防止XSS，清理名称
                                         const formattedNames = uniqueFilteredNames
                                             .map((name) => `<div>${escapeHTML(name)}</div>`)
@@ -958,23 +934,171 @@
          * 调整关闭送货单按钮位置
          */
         async btnCloseLayout() {
-            //utils.waitNode('div[id="ext-comp-1001"]').then(() => {
             const btnClose = document.querySelector("#ext-comp-1068").parentNode;
             const btnSearch = document.querySelector("#ext-comp-1063").parentNode;
-
-            DOMUtils.after(btnSearch, btnClose);
-            DOMUtils.after(
-                btnSearch,
-                `<td class="x-toolbar-cell"><span class="xtb-sep"></span></td>`
-            );
-            //});
+            if (!document.querySelector("#sep")) {
+                DOMUtils.after(btnSearch, `<td class="x-toolbar-cell" id="sep"><span class="xtb-sep"></span></td>`);
+            }
+            DOMUtils.after(btnSearch.nextSibling, btnClose);
+            utils.mutationObserver(btnClose, {
+                callback: (mutationsList) => {
+                    if (mutationsList.length == 0) {
+                        return;
+                    }
+                    if (mutationsList[0].type === "childList") {
+                        // 如果按钮不在预期位置，则执行修改位置的代码
+                        if (document.querySelector("#ext-comp-1068").closest(".x-toolbar-right-row")) {
+                            // 执行修改位置的代码
+                            deliveryCusReturn.btnCloseLayout();
+                        }
+                    }
+                },
+                config: {
+                    /* 子节点的变动（新增、删除或者更改） */
+                    childList: true,
+                    /* 是否将观察器应用于该节点的所有后代节点 */
+                    subtree: true,
+                },
+            });
         },
 
+        /**
+         * 添加单击、双击监听
+         */
+        async addEventListener() {
+            /*
+             * 对列进行排序
+             * @param {string} idDln - 单据编号
+             */
+            function sortColumn(idDln) {
+                utils.waitNode(`div[id="${idDln}"]  div.x-panel.x-grid-panel.x-border-panel`).then((e) => {
+                    // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
+                    Ext.getCmp(e.id).store.singleSort("vrPdtCode", "ASC");
+                    e.querySelectorAll("tr.x-grid3-hd-row")[1].setAttribute("hidden", "");
+                });
+            }
+            /*
+             * 监听输入框实现自动选择取消原因
+             * @param {string} idDln - 单据编号
+             */
+            function autoSelectCra(idDln) {
+                utils.waitNode(`div[id="${idDln}"] div.x-layer.x-editor.x-small-editor.x-grid-editor`).then((e) => {
+                    const panelCmp = Ext.getCmp(idDln);
+                    // var element = panelCmp.el.dom.querySelector("tr.x-grid3-hd-row[hidden]");
+                    // var parentElement = panelCmp.el.dom.querySelector("div[id^='ext-comp']");
+                    // const extCmp = Ext.getCmp(panelCmp.body.query('input.x-form-text.x-form-field.x-form-num-field')[0].id);
+                    const extCmp = panelCmp.findByType("editorgrid")[0]; // 单据编辑器
+                    const inputCmp = Ext.getCmp(e.id).field; // 修改数字输入框
+                    inputCmp.on({
+                        Blur: function (e) {
+                            // log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
+                            var lastActiveRow = extCmp.selModel.grid.lastActiveEditor.row;
+                            var cancelReasonId = PopsPanel.getValue("cancelreason-selector");
+                            if (cancelReasonId == 0) {
+                                // 未选择取消原因，不处理
+                                return;
+                            }
+                            var cancelReasonName = craData.find((item) => item.value === cancelReasonId).text;
+                            // extCmp.store.getAt(3).getChanges()
+                            // console.log("modified:",extCmp.store.getAt(lastActiveRow).modified);
+                            // console.log("getChanges:",extCmp.store.getAt(lastActiveRow).getChanges());
+
+                            var elements = extCmp
+                                .getEl()
+                                .dom.querySelectorAll("div.x-grid3-row")
+                                [lastActiveRow].querySelectorAll("div.x-grid3-cell-inner");
+                            var extStoreData = extCmp.store.data.items[lastActiveRow].data;
+
+                            var iDnlRealshipQty = extStoreData.iDnlRealshipQty; // 实际发货数量
+                            var fDnlRealprice = extStoreData.fDnlRealprice; // 实际发货单价
+
+                            var newMoney = parseFloat(elements[11].innerText).toFixed(2);
+                            var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
+
+                            if (newMoney == oldMoney) {
+                                elements[15].innerText = " ";
+                                panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.iDnlCancelreasonId = 0;
+                                panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.vrCraName = "";
+                            } else if (elements[15].innerText == " ") {
+                                elements[15].innerText = cancelReasonName;
+                                panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.iDnlCancelreasonId =
+                                    cancelReasonId;
+                            }
+                        },
+                    });
+                });
+            }
+            Ext.getCmp("ext-comp-1003").on({
+                click: function (e) {
+                    // console.log(event, e);
+                    // debugger
+                    var me = this;
+                    var t = e.getTarget();
+                    var control = t.className;
+                    // console.log(control);
+                    if (control == "showDelivery") {
+                        let idDln = t.innerText;
+                        if (PopsPanel.getValue("sortpdtCode")) {
+                            sortColumn(idDln);
+                        }
+                        if (PopsPanel.getValue("cancelreason-selector") != 0) {
+                            autoSelectCra(idDln);
+                        }
+                    }
+                },
+                dblclick: function (e) {
+                    // console.log(event,e);
+                    var me = this;
+                    var t = e.getTarget();
+                    var control = t.className;
+                    // console.log(control);
+                    if (control.includes("x-grid3-cell-inner x-grid3-col")) {
+                        let idDln = e.target.offsetParent.offsetParent.querySelector(
+                            ".x-grid3-col.x-grid3-cell.x-grid3-td-3.x-selectable"
+                        ).innerText;
+                        if (PopsPanel.getValue("sortpdtCode")) {
+                            sortColumn(idDln);
+                        }
+                        if (PopsPanel.getValue("cancelreason-selector") != 0) {
+                            autoSelectCra(idDln);
+                        }
+                    }
+                },
+            });
+        },
         /**
          * 添加按产品编号排序
          */
         async addSort() {
-            DOMUtils.on(document.querySelector("div.x-grid3-body"), "dblclick", function () {
+            function sortColumn(idDln) {
+                utils.waitNode(`div[id="${idDln}"]`).then((e) => {
+                    // var hiddenElements = document.querySelectorAll("tr.x-grid3-hd-row[hidden]");
+                    // hiddenElements.forEach(function (element) {
+                    //     var parentElement = element.closest("div[id^='ext-comp']"); // 数据区
+                    //     // log.info(parentElement.id);
+                    //     const extCmp = Ext.getCmp(parentElement.id);
+                    //     // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
+                    //     extCmp.store.singleSort("vrPdtCode", "ASC");
+                    //     parentElement
+                    //         .querySelectorAll("tr.x-grid3-hd-row")[1]
+                    //         .setAttribute("hidden", "");
+                    // });
+                    var element = e.querySelector("tr.x-grid3-hd-row[hidden]");
+                    var parentElement = element.closest("div[id^='ext-comp']"); // 数据区
+                    // log.info(parentElement.id);
+                    const extCmp = Ext.getCmp(parentElement.id);
+                    // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
+                    extCmp.store.singleSort("vrPdtCode", "ASC");
+                    parentElement.querySelectorAll("tr.x-grid3-hd-row")[1].setAttribute("hidden", "");
+                });
+            }
+        },
+
+        /**
+         * 自动选择取消原因
+         */
+        async autoSelectCra() {
+            utils.waitNode("div.x-layer.x-editor.x-small-editor.x-grid-editor").then(() => {
                 setTimeout(function () {
                     var hiddenElements = document.querySelectorAll("tr.x-grid3-hd-row[hidden]");
                     hiddenElements.forEach(function (element) {
@@ -983,23 +1107,17 @@
                         // log.info(parentElement.id);
                         const panelCmp = Ext.getCmp(tabElement.id);
                         const extCmp = Ext.getCmp(parentElement.id);
-                        // Ext.getCmp(parentElement.id).store.sort('vrPdtCode');
-                        extCmp.store.singleSort("vrPdtCode", "ASC");
-                        parentElement
-                            .querySelectorAll("tr.x-grid3-hd-row")[1]
-                            .setAttribute("hidden", "");
                         // Ext.getCmp(parentElement.id).addListener('click', function (){console.log(this)});
-
-                        extCmp.store.on({
-                            update: function () {
-                                // log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
+                        panelCmp.deliveryLineGrid.store.on({
+                            doUpdate: function () {
+                                log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
                                 var lastActiveRow = extCmp.selModel.grid.lastActiveEditor.row;
-                                var cancelReasonId = PopsPanel.getValue('cancelreason-selector');
+                                var cancelReasonId = PopsPanel.getValue("cancelreason-selector");
                                 if (cancelReasonId == 0) {
                                     // 未选择取消原因，不处理
                                     return;
                                 }
-                                var cancelReasonName =  craData.find(item => item.value === cancelReasonId).text;
+                                var cancelReasonName = craData.find((item) => item.value === cancelReasonId).text;
                                 // extCmp.store.getAt(3).getChanges()
                                 // console.log("modified:",extCmp.store.getAt(lastActiveRow).modified);
                                 // console.log("getChanges:",extCmp.store.getAt(lastActiveRow).getChanges());
@@ -1021,14 +1139,11 @@
                                     panelCmp.deliveryLineGrid.store.data.items[
                                         lastActiveRow
                                     ].data.iDnlCancelreasonId = 0;
-                                    panelCmp.deliveryLineGrid.store.data.items[
-                                        lastActiveRow
-                                    ].data.vrCraName = "";
+                                    panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.vrCraName = "";
                                 } else if (elements[15].innerText == " ") {
                                     elements[15].innerText = cancelReasonName;
-                                    panelCmp.deliveryLineGrid.store.data.items[
-                                        lastActiveRow
-                                    ].data.iDnlCancelreasonId = cancelReasonId;
+                                    panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.iDnlCancelreasonId =
+                                        cancelReasonId;
                                 }
                             },
                         });
@@ -1048,18 +1163,18 @@
                     "table",
                     {
                         innerHTML: `
-    <tbody>
-        <tr>
-            <td class="detail_header" style="width: 10%;"></td>
-            <td class="detail_header" style="width: 10%;">推送次数</td>
-            <td class="detail_header">推送信息</td>
-        </tr>
-        <tr>
-            <td class="detail_content"><input type="button" class="botton" id="autosync" value="自动导出"></td>
-            <td class="detail_content" id="timesnow"></td>
-            <td class="detail_content" id="synclog"></td>
-        </tr>
-    </tbody>`,
+                        <tbody>
+                            <tr>
+                                <td class="detail_header" style="width: 10%;"></td>
+                                <td class="detail_header" style="width: 10%;">推送次数</td>
+                                <td class="detail_header">推送信息</td>
+                            </tr>
+                            <tr>
+                                <td class="detail_content"><input type="button" class="botton" id="autosync" value="自动导出"></td>
+                                <td class="detail_content" id="timesnow"></td>
+                                <td class="detail_content" id="synclog"></td>
+                            </tr>
+                        </tbody>`,
                     },
                     {
                         style: "width: 100%;",
@@ -1074,17 +1189,14 @@
                  * OM验单数据推送SAP
                  */
                 async function PostData(startDate, endDate) {
-                    let postResp = await httpx.post(
-                        document.location.origin + "/brightdairy2/check/addSyncCheckSAP",
-                        {
-                            fetch: true,
-                            data: JSON.stringify({
-                                dtStart: startDate,
-                                dtEnd: endDate,
-                                orderType: "-1",
-                            }),
-                        }
-                    );
+                    let postResp = await httpx.post(document.location.origin + "/brightdairy2/check/addSyncCheckSAP", {
+                        fetch: true,
+                        data: JSON.stringify({
+                            dtStart: startDate,
+                            dtEnd: endDate,
+                            orderType: "-1",
+                        }),
+                    });
                     // log.success(postResp);
                     if (!postResp.status) {
                         Qmsg.error("推送失败！");
@@ -1152,51 +1264,46 @@
     /* -----------------↓执行入口↓----------------- */
     const craData = await OmApi.getCancelReason();
 
-    PopsPanel.initMenu();
+    DOMUtils.ready(function () {
+        PopsPanel.initMenu();
 
-    let pageSize = PopsPanel.getValue("pagesize");
-    if (!pageSize) {
-        pageSize = 20;
-        PopsPanel.setValue("pagesize", pageSize);
-    }
+        let pageSize = PopsPanel.getValue("pagesize");
+        if (!pageSize) {
+            pageSize = 20;
+            PopsPanel.setValue("pagesize", pageSize);
+        }
 
-    if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
-        if (PopsPanel.getValue("filiterRoute")) {
+        if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
             deliveryCusReturn.FiliterRoute();
-        }
-        if (PopsPanel.getValue("linkRotName")) {
-            deliveryCusReturn.LinkRotName();
-        }
-        if (PopsPanel.getValue("filterKeywords")) {
-            deliveryCusReturn.FilterKeywords();
-        }
-        if (pageSize > 1 && pageSize < 500) {
-            deliveryCusReturn.changePageSize(pageSize);
-        }
-        if (PopsPanel.getValue("filitershipto")) {
-            deliveryCusReturn.FiliterShipToName();
-        }
-        if (PopsPanel.getValue("btnclose")) {
             DOMUtils.ready(function () {
-                setTimeout(function () {
+                if (PopsPanel.getValue("linkRotName")) {
+                    deliveryCusReturn.LinkRotName();
+                }
+                if (PopsPanel.getValue("filterKeywords")) {
+                    deliveryCusReturn.FilterKeywords();
+                }
+                if (pageSize !== 20) {
+                    deliveryCusReturn.changePageSize(pageSize);
+                }
+                if (PopsPanel.getValue("filitershipto")) {
+                    deliveryCusReturn.FiliterShipToName();
+                }
+                if (PopsPanel.getValue("btnclose")) {
+                    //  setTimeout(function () {
                     deliveryCusReturn.btnCloseLayout();
-                }, 1000);
+                    //  }, 500);
+                }
+                deliveryCusReturn.addEventListener();
             });
         }
-        if (PopsPanel.getValue("sortpdtCode")) {
+
+        if (window.location.pathname.startsWith("/modules/sap_check")) {
             DOMUtils.ready(function () {
-                setTimeout(function () {
-                    deliveryCusReturn.addSort();
-                }, 1000);
+                if (PopsPanel.getValue("autoSyncSAP")) {
+                    SyncSAP.autoSyncSAP();
+                }
             });
         }
-    }
-
-    if (window.location.pathname.startsWith("/modules/sap_check")) {
-        if (PopsPanel.getValue("autoSyncSAP")) {
-            SyncSAP.autoSyncSAP();
-        }
-    }
-
+    });
     /* -----------------↑执行入口↑----------------- */
 })();
