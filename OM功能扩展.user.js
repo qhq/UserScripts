@@ -77,7 +77,7 @@
     /**
      * api
      */
-    const OmApi = {
+    const API = {
         /**
          * 获取取消原因列表
          */
@@ -110,12 +110,47 @@
                 resolve(result);
             });
         },
+
+        /**
+         * 查找与指定属性集匹配的 Ext 组件。
+         *
+         * **示例**:
+         * // 查找 id 为 'myPanel' 且 title 为 'My Panel' 的组件
+         * const myPanelAttrs = { id: 'myPanel', title: 'My Panel' };
+         * const matchingPanels = findCmp(myPanelAttrs);
+         * console.log(matchingPanels); // 输出：[{id: 'myPanel', title: 'My Panel', ...}] （包含一个匹配的面板）
+         * @param {Object} attributes - 匹配条件对象，键值对表示期望的组件属性及其对应值。
+         * @returns {Ext.Component[]} - 匹配的 Ext 组件数组。
+         */
+        findCmp(attributes) {
+            var matchedComponents = [];
+            //首先检查attributes是否为自有属性
+            var keys = [];
+            for (var key in attributes) {
+                if (attributes.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+            // 遍历所有组件并筛选出符合条件的组件
+            Ext.ComponentMgr.all.each(function (cmp) {
+                // 遍历每个属性并进行匹配
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    if (cmp[prop] !== attributes[prop]) {
+                        return; // 如果属性不相等，提前退出当前迭代
+                    }
+                }
+                // 所有属性都通过了比较，将组件添加到结果数组中
+                matchedComponents.push(cmp);
+            });
+            return matchedComponents;
+        },
     };
 
     /**
-     * GreasyFork的css
+     * css
      */
-    const GreasyforkCSS = {
+    const OwnCSS = {
         UIScriptListCSS: `
         .w-script-list-item {
           padding: 10px 0;
@@ -153,6 +188,9 @@
      .whitesev-hide-important{
         display: none !important;
       }
+      .whitesev-hide{
+        display: none;
+      }
     `,
         /**
          * 初始化
@@ -186,7 +224,7 @@
             if (unsafeWindow.top !== unsafeWindow.self) {
                 return;
             }
-            GreasyforkMenu.menu.add([
+            OwnMenu.menu.add([
                 {
                     key: "show_pops_panel_setting",
                     text: "⚙ 设置",
@@ -272,7 +310,7 @@
                         toClose: true,
                     },
                 },
-                style: GreasyforkCSS.UIScriptListCSS,
+                style: OwnCSS.UIScriptListCSS,
                 width: pops.isPhone() ? "92vw" : "800px",
                 height: pops.isPhone() ? "80vh" : "600px",
                 only: true,
@@ -549,9 +587,9 @@
     };
 
     /**
-     * GreasyFork的菜单
+     * 菜单
      */
-    const GreasyforkMenu = {
+    const OwnMenu = {
         /**
          * @class
          */
@@ -965,7 +1003,7 @@
         /**
          * 添加单击、双击监听
          */
-        async addEventListener() {
+        addEventListener() {
             /*
              * 按产品编号列进行排序
              * @param {string} idDln - 单据编号
@@ -1064,6 +1102,29 @@
                         }
                     }
                 },
+            });
+        },
+
+        /**
+         * 双击全选/取消全选订单
+         */
+        doubleClickSelectAll() {
+            let element = document.querySelector(".x-panel-tbar.x-panel-tbar-noheader.x-panel-tbar-noborder").lastChild
+                .lastChild;
+            let titleEM = element.querySelector("table > tbody > tr > td.x-toolbar-left");
+            titleEM.setAttribute("title", "双击全选/取消全选订单");
+            element.addEventListener("dblclick", function () {
+                let cmp = API.findCmp({ xtype: "grid", refName: "deliveryCusReturnGrid" })[0].selModel;
+                var a = document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-checker > div > div");
+                var b = Ext.fly(a.parentNode);
+                var d = b.hasClass("x-grid3-hd-checker-on");
+                if (d) {
+                    b.removeClass("x-grid3-hd-checker-on");
+                    cmp.clearSelections();
+                } else {
+                    b.addClass("x-grid3-hd-checker-on");
+                    cmp.selectAll();
+                }
             });
         },
     };
@@ -1174,14 +1235,79 @@
         },
     };
 
+    const UnNormalOrder = {
+        modifyStyle() {
+            let unNormalOrderCSS = `
+                .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+                    margin-bottom: 1px;
+                }
+                .el-input__inner {
+                    padding: 0 10px;
+                }
+                .el-form-item--mini .el-form-item__label {
+                    line-height: 20px;
+                }
+                .el-input--mini .el-input__inner {
+                    height: 20px;
+                    line-height: 20px;
+                }
+            `;
+            GM_addStyle(unNormalOrderCSS);
+        },
+        hiddenElements() {
+            // let emShipTo = document
+            //     .querySelector("input[data-id='idBit']")
+            //     .closest("div.el-form-item.el-form-item--mini");
+            // emShipTo.setAttribute("hidden", "");
+            // let emRot = document.querySelector("input[data-id='idRot']").closest("div.el-form-item.el-form-item--mini");
+            // emRot.setAttribute("hidden", "");
+
+            waitForElementToRemove(
+                "#app > div.el-card.box-card.z-card.is-always-shadow > div > form > div:nth-child(1) > div.el-col.el-col-14 > div:nth-child(6)"
+            );
+            waitForElementToRemove(
+                "#app > div.el-card.box-card.z-card.is-always-shadow > div > form > div:nth-child(1) > div.el-col.el-col-14 > div:nth-child(5)"
+            );
+        },
+    };
+
+    const NormalOrder = {
+        modifyStyle() {
+            let orderActionCSS = `
+                .el-card__header {
+                    padding: 1px 2px;
+                }
+                .el-card__body {
+                    position: absolute;
+                    inset: 22px 0px 0px !important;
+                }
+                .el-radio-button--medium .el-radio-button__inner {
+                    padding: 3px 20px;
+                    font-size: 14px;
+                    border-radius: 0
+                }
+                .cle{
+                    font-size: 18px !important;
+                    padding: 4px 8px 4px 0px !important;
+                }
+            `;
+            GM_addStyle(orderActionCSS);
+        },
+        hiddenElements() {
+            waitForElementToRemove(
+                "#app > div.el-card.box-card.z-card.is-always-shadow > div.el-card__header > div > span"
+            );
+        },
+    };
+
     /* -----------------↑函数区域↑----------------- */
 
     /* -----------------↓执行入口↓----------------- */
-    const craData = await OmApi.getCancelReason();
+    const craData = await API.getCancelReason();
 
+    OwnCSS.init();
     DOMUtils.ready(function () {
         PopsPanel.initMenu();
-
         let pageSize = PopsPanel.getValue("pagesize");
         if (!pageSize) {
             pageSize = 20;
@@ -1209,6 +1335,7 @@
                     //  }, 500);
                 }
                 deliveryCusReturn.addEventListener();
+                deliveryCusReturn.doubleClickSelectAll();
             });
         }
 
@@ -1218,6 +1345,20 @@
                     SyncSAP.autoSyncSAP();
                 }
             });
+        }
+
+        if (window.location.pathname.endsWith("/modules/repr_addUnNormalOrder/navigate.jsp")) {
+            UnNormalOrder.modifyStyle();
+            if (PopsPanel.getValue("autoSyncSAP")) {
+                UnNormalOrder.hiddenElements();
+            }
+        }
+
+        if (window.location.pathname.endsWith("/modules/repr_addOrderAction/navigate.jsp")) {
+            NormalOrder.modifyStyle();
+            if (PopsPanel.getValue("autoSyncSAP")) {
+                NormalOrder.hiddenElements();
+            }
         }
     });
     /* -----------------↑执行入口↑----------------- */
