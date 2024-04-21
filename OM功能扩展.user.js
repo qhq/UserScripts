@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240421.2131
+// @version      20240421.2151
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
