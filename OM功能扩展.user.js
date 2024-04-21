@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240421.2002
+// @version      20240421.2131
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -265,6 +265,19 @@
                     }
                 });
             });
+        },
+        /**
+         * 自动判断菜单是否启用，然后执行回调
+         * @param {string} key
+         * @param {Function} callback 回调
+         */
+        execMenu(key, callback) {
+            if (typeof key !== "string") {
+                throw new TypeError("key 必须是字符串");
+            }
+            if (PopsPanel.getValue(key)) {
+                callback();
+            }
         },
         /**
          * 设置值
@@ -1342,7 +1355,7 @@
             return `/* 不清楚作用时不要随意改动 */
 /* 输入框行间距 */
 .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
-    margin-bottom: 1px;
+    margin-bottom: 1px !important;
 }
 /* 输入框左间距 */
 .el-input__inner {
@@ -1445,32 +1458,37 @@ div.el-col.el-col-14 > div:nth-child(6) {
     // 客户回单
     if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
         DOMUtils.ready(function () {
-            if (PopsPanel.getValue("filiterroute")) {
-                deliveryCusReturn.FiliterRoute();
-                utils.waitNode('input[name="startRotName"]').then((el) => {
-                    if (el.className !== "isModified") {
-                        let comboCmp = API.findCmp({ xtype: "combo", refName: "startRotName" })[0];
-                        comboCmp.store.load({ params: "start" });
-                    }
-                });
-            }
-            if (PopsPanel.getValue("linkRotName")) {
-                deliveryCusReturn.LinkRotName();
-            }
-            if (PopsPanel.getValue("filterKeywords")) {
-                deliveryCusReturn.FilterKeywords();
-            }
+            PopsPanel.execMenu("filiterroute"),
+                () => {
+                    deliveryCusReturn.FiliterRoute();
+                    utils.waitNode('input[name="startRotName"]').then((el) => {
+                        if (el.className !== "isModified") {
+                            let comboCmp = API.findCmp({ xtype: "combo", refName: "startRotName" })[0];
+                            comboCmp.store.load({ params: "start" });
+                        }
+                    });
+                };
+            PopsPanel.execMenu("linkRotName"),
+                () => {
+                    deliveryCusReturn.LinkRotName();
+                };
+            PopsPanel.execMenu("filterKeywords"),
+                () => {
+                    deliveryCusReturn.FilterKeywords();
+                };
             if (pageSize !== 20) {
                 deliveryCusReturn.changePageSize(pageSize);
             }
-            if (PopsPanel.getValue("filitershipto")) {
-                deliveryCusReturn.FiliterShipToName();
-            }
-            if (PopsPanel.getValue("btnclose")) {
-                //  setTimeout(function () {
-                deliveryCusReturn.btnCloseLayout();
-                //  }, 500);
-            }
+            PopsPanel.execMenu("filitershipto"),
+                () => {
+                    deliveryCusReturn.FiliterShipToName();
+                };
+            PopsPanel.execMenu("btnclose"),
+                () => {
+                    //  setTimeout(function () {
+                    deliveryCusReturn.btnCloseLayout();
+                    //  }, 500);
+                };
             deliveryCusReturn.addEventListener();
             deliveryCusReturn.doubleClickSelectAll();
         });
@@ -1478,23 +1496,26 @@ div.el-col.el-col-14 > div:nth-child(6) {
     // 验单导出SAP
     if (window.location.pathname.startsWith("/modules/sap_check")) {
         DOMUtils.ready(function () {
-            if (PopsPanel.getValue("autoSyncSAP")) {
-                SyncSAP.autoSyncSAP();
-            }
+            PopsPanel.execMenu("autoSyncSAP"),
+                () => {
+                    SyncSAP.autoSyncSAP();
+                };
         });
     }
     // 不影响库存订单
     if (window.location.pathname.startsWith("/modules/repr_addUnNormalOrder")) {
-        if (PopsPanel.getValue("autoSyncSAP")) {
-            UnNormalOrder.modifyStyle();
-            //UnNormalOrder.hiddenElements();
-        }
+        PopsPanel.execMenu("om-unnormal-order-shield"),
+            () => {
+                UnNormalOrder.modifyStyle();
+                //UnNormalOrder.hiddenElements();
+            };
     }
     //销售订单
     if (window.location.pathname.startsWith("/modules/repr_addOrderAction")) {
-        if (PopsPanel.getValue("om-normal-order-shield")) {
-            NormalOrder.modifyStyle();
-        }
+        PopsPanel.execMenu("om-normal-order-shield"),
+            () => {
+                NormalOrder.modifyStyle();
+            };
     }
 
     /* -----------------↑执行入口↑----------------- */
