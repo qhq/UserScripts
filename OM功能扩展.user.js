@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240420.2329
+// @version      20240421.2002
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
-// @match        *://*.brightdairy.com*/*
+// @match        *://om40.brightdairy.com*/*
+// @match        *://omtest.brightdairy.com*/*
 // @icon         data:image/x-icon;base64,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/////////////+Lj+f+cl+z//////+fn+v9kWOH////////////4+f3/OSfY/y4W1v8tFtaKLhbW/y4W1v9GNtv/ioLo/9vb+P//////al7i/y4W1v8uFtb/LhbW/7278v/+/v7/m5Ts/4qC6P9iVOD/LhbW/zIh1//8/P7/+/v+/+rt+//3+P3//////2Nc4f/v7/z/7/H8/zgo2P+EfOf/3d74//z9/v9FM9r/LhbW/y0W1oouFtb/LhbW/y4W1v8uFtb/hn7n//////+XkOv/LhbW/y4W1v8uFtb/vbvy//7+/v9LN9v/LhbW/y4W1v8uFtb/MiHX//z8/v/Z1/j/OirY/7a28f//////UkXd/+Pj+f/v8fz/Mh7X/y4W1v/BwfP//P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/LhbW/y4W1v9bTt///v7+/8TC8/8uFtb/LhbW/y4W1v+9u/L//v7+/0s32/8uFtb/LhbW/y4W1v8yIdf//Pz+/9bU9/8uFtb/sa/w//////9SRd3/4+P5/+/x/P8yHtf/LhbW/8HB8//8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v8uFtb/LhbW/zom2P/29/3/6+z7/zId1/8uFtb/LhbW/7278v/+/v7/Szfb/y4W1v8uFtb/LhbW/zIh1//8/P7/1tT3/y4W1v+xr/D//////1JF3f/j4/n/+vr+/73A8/+7vvL/6+37//z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/y4W1v8uFtb/LhbW/9jZ9//+/v7/TDzc/y4W1v8uFtb/vbvy//7+/v9LN9v/LhbW/y4W1v8uFtb/MiHX//z8/v/W1Pf/LhbW/7Gv8P//////UkXd/+Pj+f///////////////////////P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/LhbW/y4W1v8uFtb/r6vv//////92bOT/LhbW/y4W1v+9u/L//v7+/0s32/8uFtb/LhbW/y4W1v8yIdf//Pz+/9bU9/8uFtb/sa/w//////9SRd3/4+P5//f4/f+Zmuv/l5br/+Di+f/8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v9vZeP/4N75/+De+f/w8Pz//////+7t+//g3vn/4N75//X1/f/+/v7/5eP6/+De+f+Tier/LhbW/zIh1//8/P7/+fn9/+De+f/09Pz//////1JF3f/j4/n/7/H8/zIe1/8uFtb/wcHz//z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/5iQ6////////////////////////////////////////////////////////////6Wb7f8uFtb/MiHX//z8/v//////////////////////UkXd/+Pj+f/v8fz/Mh7X/y4W1v/BwfP//P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/Py7Z/3hu5f95b+X/eW/l/3lv5f+vrfD//////6+t8P95b+X/eW/l/3lv5f95b+X/WEne/y4W1v8yIdf//Pz+/+Xk+v95b+X/zs71//////9SRd3/4+P5//n6/v+ytfD/sLPw/+jq+v/8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v8uFtb/LhbW/0g22/9aSt//RjTb/4J65///////gnrn/0Y02/9aSt//SDbb/y4W1v8uFtb/LhbW/zIh1//8/P7/1tT3/y4W1v+xr/D//////1JF3f/j4/n///////////////////////z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/y4W1v83JNj/6er7//z9/v/a2/j/g33n//////+Dfef/2dv4//z9/v/p6/v/NyPY/y4W1v8uFtb/MiHX//z8/v/W1Pf/LhbW/7Gv8P//////UkXd/+Pj+f/4+f3/o6Xt/6Gh7f/k5vr//P3+/0Y02/8uFtb/LRbWii4W1v8uFtb/LhbW/3ty5f/+/v7//P3+/8jJ9P+Ce+f//////4J85//HyPT//P3+//7+/v97cuX/LhbW/y4W1v8yIdf//Pz+/9bU9/8uFtb/sa/w//////9SRd3/4+P5/+/x/P8yHtf/LhbW/8HB8//8/f7/RjTb/y4W1v8tFtaKLhbW/y4W1v8uF9b/0ND2//////9+dub/Mx3X/4J65///////gnrn/zMd1/9+dub//////9DQ9v8uFtb/LhbW/zIh1//8/P7/1tT3/4R/5//s7vv//////1JF3f/j4/n/7/H8/zYm2P9CN9r/yMr0//z9/v9GNNv/LhbW/y0W1oouFtb/LhbW/1ZI3v/9/f7/5+j6/zUg1/8uFtb/gnrn//////+Ceuf/LhbW/zQg1//n6Pr//f3+/1ZI3v8uFtb/MiHX//z8/v/W1Pf/wr7z///////+/v7/Szzc/+Pj+f/v8fz/oqHt//j5/f/9/f7//P3+/0Uz2v8uFtb/LRbWii4W1v8uFtb/VUve/4OA5/9jWuH/LhbW/y4W1v+Ceuf//////4J65/8uFtb/LhbW/2Na4f+DgOf/VUve/y4W1v8wG9b/gn/n/3Nt5P9VR97/g4Dn/3dx5f8vGNb/4+P5/+/x/P+mpe7////////////r7fv/NCDX/y4W1v8tFtaKLhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/zcm2P9EO9v/NybY/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v9BNtr/Qjna/zMg1/9EO9v/RDvb/zor2P8uFtb/LhbW/y4W1YguFtbcLhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbWZi4W1l4tFtb4LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1v8uFtb/LhbW/y4W1tAuFtYO//x////AA//+AAD/+AAAP/AAAA/gAAAHwAAAA4AAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAE=
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
@@ -352,6 +353,64 @@
             return result;
         },
         /**
+         * 获取自定义配置的规则的textarea
+         * @returns {PopsPanelOwnDetails}
+         */
+        getOwnextAreaRule(text, key, defaultValue, className) {
+            return {
+                text: text,
+                type: "forms",
+                forms: [
+                    {
+                        type: "own",
+                        afterAddToUListCallBack(formConfig, rightContainerOptions) {
+                            DOMUtils.on(
+                                rightContainerOptions.formHeaderDivElement.querySelector("a"),
+                                "click",
+                                void 0,
+                                () => {
+                                    PopsPanel.deleteValue(key);
+                                    rightContainerOptions.ulElement.querySelector("textarea").value = defaultValue;
+                                    Qmsg.success("已重置");
+                                }
+                            );
+                        },
+                        getLiElementCallBack(liElement) {
+                            let $textAreaContainer = DOMUtils.createElement("div", {
+                                className: `pops-panel-textarea ${className}`,
+                                innerHTML: `
+                      <style type="text/css">
+                      .${className}{
+                        width: 100%;
+                      }
+                      .${className} textarea{
+                        font-size: 13px;
+                        min-height: 400px;
+                        white-space: pre;
+                        border-radius: 0 !important;
+                      }
+                      </style>
+                      <textarea></textarea>
+                      `,
+                            });
+                            let $textArea = $textAreaContainer.querySelector("textarea");
+                            $textArea.value = PopsPanel.getValue(key, defaultValue);
+                            liElement.appendChild($textAreaContainer);
+                            DOMUtils.on(
+                                $textArea,
+                                "input propertychange",
+                                void 0,
+                                utils.debounce(() => {
+                                    PopsPanel.setValue(key, $textArea.value);
+                                }, 100)
+                            );
+                            return liElement;
+                        },
+                    },
+                ],
+            };
+        },
+        /**
          * 获取配置内容
          * @returns {PopsPanelContentConfig[]}
          */
@@ -580,6 +639,42 @@
                                 ),
                             ],
                         },
+                        {
+                            text: "",
+                            type: "forms",
+                            forms: [
+                                PopsPanel.getSwtichDetail(
+                                    "新建订单页面调整",
+                                    "调整新建订单页面布局",
+                                    "om-normal-order-shield",
+                                    true
+                                ),
+                            ],
+                        },
+                        this.getOwnextAreaRule(
+                            "自定义屏蔽CSS，<a href='javascript:;'>点击重置</a>",
+                            "om-normal-order-css",
+                            NormalOrder.getDefaultShieldCSS(),
+                            "om-normal-order-css"
+                        ),
+                        {
+                            text: "",
+                            type: "forms",
+                            forms: [
+                                PopsPanel.getSwtichDetail(
+                                    "不影响库存订单页面调整",
+                                    "调整不影响库存订单页面布局。",
+                                    "om-unnormal-order-shield",
+                                    true
+                                ),
+                            ],
+                        },
+                        this.getOwnextAreaRule(
+                            "自定义屏蔽CSS，<a href='javascript:;'>点击重置</a>",
+                            "om-unnormal-order-css",
+                            UnNormalOrder.getDefaultShieldCSS(),
+                            "om-unnormal-order-css"
+                        ),
                     ],
                 },
             ];
@@ -823,6 +918,13 @@
          * 物流线路优化，仅显示白名单内线路
          */
         FiliterRoute() {
+            // var myStore = Ext.getCmp("ext-comp-1039").store;
+            // var vrRotNameList = ["C1-宜兴二线", "A-CZ宜兴电子线（经销商）"];
+            // myStore.each(function (record) {
+            //     if (!vrRotNameList.includes(record.get("vrRotName"))) {
+            //         myStore.remove(record);
+            //     }
+            // });
             /**
              * 初始化线路白名单
              * @param {Object} parsedData - 解析后的数据对象，预期包含一个data数组属性
@@ -848,10 +950,7 @@
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
                 // log.info({ ajaxHookr: request.url });
-                if (
-                    request.url.startsWith("/brightdairy2/baseData/getRouteByDom") &&
-                    PopsPanel.getValue("filiterRoute")
-                ) {
+                if (request.url.startsWith("/brightdairy2/baseData/getRouteByDom")) {
                     /**
                      * 重构响应
                      * @param {XMLHttpRequest} _request_
@@ -880,6 +979,9 @@
                             log.success("已优化线路列表!");
                             Qmsg.success(`已优化线路列表!`, { timeout: 1500 });
                             _request_.responseText = JSON.stringify(data);
+                            utils.waitNode('input[name="startRotName"]').then((el) => {
+                                el.setAttribute("class", "isModified");
+                            });
                         } catch (error) {
                             log.error("处理线路列表时出现错误:", error);
                             Qmsg.error(`线路列表优化失败，请稍后再试!`, {
@@ -919,7 +1021,7 @@
              */
             const ajaxHooker = utils.ajaxHooker();
             ajaxHooker.hook(function (request) {
-                // log.info(["ajaxHookr: ", request.url]);
+                // log.info({ ajaxHookr: request.url });
                 if (request.url.startsWith("/brightdairy2/deliveryNote/getByCusRouteTerr")) {
                     /**
                      * 重构响应
@@ -1236,23 +1338,35 @@
     };
 
     const UnNormalOrder = {
+        getDefaultShieldCSS() {
+            return `/* 不清楚作用时不要随意改动 */
+/* 输入框行间距 */
+.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+    margin-bottom: 1px;
+}
+/* 输入框左间距 */
+.el-input__inner {
+    padding: 0 10px;
+}
+/* 输入框标签高度 */
+.el-form-item--mini .el-form-item__label {
+    line-height: 20px;
+}
+/* 输入框高度 */
+.el-input--mini .el-input__inner {
+    height: 20px;
+    line-height: 20px;
+}
+div.el-col.el-col-14 > div:nth-child(5) {
+    display: none;
+}
+div.el-col.el-col-14 > div:nth-child(6) {
+    display: none;
+}`;
+        },
         modifyStyle() {
-            let unNormalOrderCSS = `
-                .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
-                    margin-bottom: 1px;
-                }
-                .el-input__inner {
-                    padding: 0 10px;
-                }
-                .el-form-item--mini .el-form-item__label {
-                    line-height: 20px;
-                }
-                .el-input--mini .el-input__inner {
-                    height: 20px;
-                    line-height: 20px;
-                }
-            `;
-            GM_addStyle(unNormalOrderCSS);
+            let shieldCSS = PopsPanel.getValue("om-unnormal-order-css", this.getDefaultShieldCSS());
+            GM_addStyle(shieldCSS);
         },
         hiddenElements() {
             // let emShipTo = document
@@ -1262,36 +1376,52 @@
             // let emRot = document.querySelector("input[data-id='idRot']").closest("div.el-form-item.el-form-item--mini");
             // emRot.setAttribute("hidden", "");
 
-            waitForElementToRemove(
-                "#app > div.el-card.box-card.z-card.is-always-shadow > div > form > div:nth-child(1) > div.el-col.el-col-14 > div:nth-child(6)"
-            );
-            waitForElementToRemove(
-                "#app > div.el-card.box-card.z-card.is-always-shadow > div > form > div:nth-child(1) > div.el-col.el-col-14 > div:nth-child(5)"
-            );
+            waitForElementToRemove("div.el-col.el-col-14 > div:nth-child(6)");
+            waitForElementToRemove("div.el-col.el-col-14 > div:nth-child(5)");
         },
     };
 
     const NormalOrder = {
+        getDefaultShieldCSS() {
+            return `/* 不清楚作用时不要随意改动 */
+/* 输入框行间距 */
+.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+    margin-bottom: 1px;
+}
+/* 输入框左间距 */
+.el-input__inner {
+    padding: 0 10px;
+}
+/* 输入框标签高度 */
+.el-form-item--mini .el-form-item__label {
+    line-height: 20px;
+}
+/* 输入框高度 */
+.el-input--mini .el-input__inner {
+    height: 20px;
+    line-height: 20px;
+}
+/* 顶部按钮 */
+.el-card__header {
+    padding: 1px 2px;
+}
+.el-card__body {
+    position: absolute;
+    inset: 22px 0px 0px !important;
+}
+.el-radio-button--medium .el-radio-button__inner {
+    padding: 3px 20px;
+    font-size: 14px;
+    border-radius: 0
+}
+/* 新建订单左上角齿轮图标 */
+.clearfix > span {
+    display: none !important;
+}`;
+        },
         modifyStyle() {
-            let orderActionCSS = `
-                .el-card__header {
-                    padding: 1px 2px;
-                }
-                .el-card__body {
-                    position: absolute;
-                    inset: 22px 0px 0px !important;
-                }
-                .el-radio-button--medium .el-radio-button__inner {
-                    padding: 3px 20px;
-                    font-size: 14px;
-                    border-radius: 0
-                }
-                .cle{
-                    font-size: 18px !important;
-                    padding: 4px 8px 4px 0px !important;
-                }
-            `;
-            GM_addStyle(orderActionCSS);
+            let shieldCSS = PopsPanel.getValue("om-normal-order-css", this.getDefaultShieldCSS());
+            GM_addStyle(shieldCSS);
         },
         hiddenElements() {
             waitForElementToRemove(
@@ -1306,61 +1436,66 @@
     const craData = await API.getCancelReason();
 
     OwnCSS.init();
-    DOMUtils.ready(function () {
-        PopsPanel.initMenu();
-        let pageSize = PopsPanel.getValue("pagesize");
-        if (!pageSize) {
-            pageSize = 20;
-            PopsPanel.setValue("pagesize", pageSize);
-        }
-
-        if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
-            deliveryCusReturn.FiliterRoute();
-            DOMUtils.ready(function () {
-                if (PopsPanel.getValue("linkRotName")) {
-                    deliveryCusReturn.LinkRotName();
-                }
-                if (PopsPanel.getValue("filterKeywords")) {
-                    deliveryCusReturn.FilterKeywords();
-                }
-                if (pageSize !== 20) {
-                    deliveryCusReturn.changePageSize(pageSize);
-                }
-                if (PopsPanel.getValue("filitershipto")) {
-                    deliveryCusReturn.FiliterShipToName();
-                }
-                if (PopsPanel.getValue("btnclose")) {
-                    //  setTimeout(function () {
-                    deliveryCusReturn.btnCloseLayout();
-                    //  }, 500);
-                }
-                deliveryCusReturn.addEventListener();
-                deliveryCusReturn.doubleClickSelectAll();
-            });
-        }
-
-        if (window.location.pathname.startsWith("/modules/sap_check")) {
-            DOMUtils.ready(function () {
-                if (PopsPanel.getValue("autoSyncSAP")) {
-                    SyncSAP.autoSyncSAP();
-                }
-            });
-        }
-
-        if (window.location.pathname.endsWith("/modules/repr_addUnNormalOrder/navigate.jsp")) {
-            UnNormalOrder.modifyStyle();
-            if (PopsPanel.getValue("autoSyncSAP")) {
-                UnNormalOrder.hiddenElements();
+    PopsPanel.initMenu();
+    let pageSize = PopsPanel.getValue("pagesize");
+    if (!pageSize) {
+        pageSize = 20;
+        PopsPanel.setValue("pagesize", pageSize);
+    }
+    // 客户回单
+    if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
+        DOMUtils.ready(function () {
+            if (PopsPanel.getValue("filiterroute")) {
+                deliveryCusReturn.FiliterRoute();
+                utils.waitNode('input[name="startRotName"]').then((el) => {
+                    if (el.className !== "isModified") {
+                        let comboCmp = API.findCmp({ xtype: "combo", refName: "startRotName" })[0];
+                        comboCmp.store.load({ params: "start" });
+                    }
+                });
             }
-        }
-
-        if (window.location.pathname.endsWith("/modules/repr_addOrderAction/navigate.jsp")) {
+            if (PopsPanel.getValue("linkRotName")) {
+                deliveryCusReturn.LinkRotName();
+            }
+            if (PopsPanel.getValue("filterKeywords")) {
+                deliveryCusReturn.FilterKeywords();
+            }
+            if (pageSize !== 20) {
+                deliveryCusReturn.changePageSize(pageSize);
+            }
+            if (PopsPanel.getValue("filitershipto")) {
+                deliveryCusReturn.FiliterShipToName();
+            }
+            if (PopsPanel.getValue("btnclose")) {
+                //  setTimeout(function () {
+                deliveryCusReturn.btnCloseLayout();
+                //  }, 500);
+            }
+            deliveryCusReturn.addEventListener();
+            deliveryCusReturn.doubleClickSelectAll();
+        });
+    }
+    // 验单导出SAP
+    if (window.location.pathname.startsWith("/modules/sap_check")) {
+        DOMUtils.ready(function () {
+            if (PopsPanel.getValue("autoSyncSAP")) {
+                SyncSAP.autoSyncSAP();
+            }
+        });
+    }
+    // 不影响库存订单
+    if (window.location.pathname.startsWith("/modules/repr_addUnNormalOrder")) {
+        if (PopsPanel.getValue("autoSyncSAP")) {
             UnNormalOrder.modifyStyle();
+            //UnNormalOrder.hiddenElements();
+        }
+    }
+    //销售订单
+    if (window.location.pathname.startsWith("/modules/repr_addOrderAction")) {
+        if (PopsPanel.getValue("om-normal-order-shield")) {
             NormalOrder.modifyStyle();
-            if (PopsPanel.getValue("autoSyncSAP")) {
-                NormalOrder.hiddenElements();
-            }
         }
-    });
+    }
+
     /* -----------------↑执行入口↑----------------- */
 })();
