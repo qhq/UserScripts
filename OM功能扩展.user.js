@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240421.2151
+// @version      20240421.2311
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -25,7 +25,7 @@
 // @updateURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
 
-(async function () {
+(function () {
     if (typeof unsafeWindow === "undefined") {
         unsafeWindow = globalThis || window;
     }
@@ -82,7 +82,7 @@
         /**
          * 获取取消原因列表
          */
-        async getCancelReason() {
+        getCancelReason() {
             function formatCancelReasons(data) {
                 return data.map((item) => ({
                     value: item.idCra,
@@ -1446,7 +1446,11 @@ div.el-col.el-col-14 > div:nth-child(6) {
     /* -----------------↑函数区域↑----------------- */
 
     /* -----------------↓执行入口↓----------------- */
-    const craData = await API.getCancelReason();
+    let craData = [];
+    async function setCraData() {
+        craData = await API.getCancelReason();
+    }
+    setCraData();
 
     OwnCSS.init();
     PopsPanel.initMenu();
