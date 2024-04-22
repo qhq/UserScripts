@@ -1156,10 +1156,7 @@
                                             var lastEditCol = extCmp.lastEdit.col;
                                             var cancelReasonId = PopsPanel.getValue("cancelreason-selector");
                                             var editItem = extCmp.store.data.items[lastEditRow];
-                                            if (
-                                                cancelReasonId == 0 ||
-                                                (lastEditCol != 7 && lastEditCol != 9)
-                                            ) {
+                                            if (cancelReasonId == 0 || (lastEditCol != 7 && lastEditCol != 9)) {
                                                 return;
                                             }
                                             var cancelReasonName = craData.find(
@@ -1185,21 +1182,14 @@
                                             // var newMoney = parseFloat(elements[11].innerText).toFixed(2);
                                             // var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
 
-                                            var craID =
-                                                panelCmp.deliveryLineGrid.store.data.items[lastEditRow].data
-                                                    .iDnlCancelreasonId;
+                                            var craCmp = panelCmp.deliveryLineGrid.store.data.items[lastEditRow].data;
                                             if (RealacceptQty == iDnlRealshipQty) {
                                                 elements[15].innerText = " ";
-                                                panelCmp.deliveryLineGrid.store.data.items[
-                                                    lastEditRow
-                                                ].data.iDnlCancelreasonId = 0;
-                                                panelCmp.deliveryLineGrid.store.data.items[lastEditRow].data.vrCraName =
-                                                    "";
-                                            } else if (craID == 0) {
+                                                craCmp.iDnlCancelreasonId = 0;
+                                                craCmp.vrCraName = "";
+                                            } else if (craCmp.iDnlCancelreasonId == 0) {
                                                 elements[15].innerText = cancelReasonName;
-                                                panelCmp.deliveryLineGrid.store.data.items[
-                                                    lastEditRow
-                                                ].data.iDnlCancelreasonId = cancelReasonId;
+                                                craCmp.iDnlCancelreasonId = cancelReasonId;
                                             }
                                         },
                                     });
