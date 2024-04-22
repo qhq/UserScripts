@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240422.1039
+// @version      20240422.1051
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1224,29 +1224,35 @@
 
             /*
              * 监听日期框滚轮事件，实现日期滚动
+             * 双击日期框选择今天
              */
             let dataCmp = API.findCmp({ xtype: "datefield", refName: "orderDate" })[0];
-            DOMUtils.on(dataCmp.el.dom, "wheel", function (e) {
-                e.preventDefault();
-                // console.log(e); // 现有的日志输出
+            DOMUtils.on(dataCmp.el.dom, "dblclick wheel", function (e) {
+                if (e.type == "dblclick") {
+                    dataCmp.setValue(new Date().clearTime());
+                }
+                if (e.type == "wheel") {
+                    e.preventDefault();
+                    // console.log(e); // 现有的日志输出
 
-                // 防抖逻辑
-                if (!dataCmp.hasOwnProperty("wheeling") || !dataCmp.wheeling) {
-                    dataCmp.wheeling = true;
+                    // 防抖逻辑
+                    if (!dataCmp.hasOwnProperty("wheeling") || !dataCmp.wheeling) {
+                        dataCmp.wheeling = true;
 
-                    setTimeout(function () {
-                        dataCmp.wheeling = false;
-                    }, 100);
+                        setTimeout(function () {
+                            dataCmp.wheeling = false;
+                        }, 100);
 
-                    // 计算滚轮方向
-                    var delta = e.deltaY || e.wheelDelta || e.detail;
+                        // 计算滚轮方向
+                        var delta = e.deltaY || e.wheelDelta || e.detail;
 
-                    if (delta > 0) {
-                        // 滚轮向下滚动
-                        dataCmp.setValue(dataCmp.getValue().add("d", -1)); // 减少日期数，可以根据需求调整操作
-                    } else if (delta < 0) {
-                        // 滚轮向上滚动
-                        dataCmp.setValue(dataCmp.getValue().add("d", 1)); // 增加日期数，可以根据需求调整操作
+                        if (delta > 0) {
+                            // 滚轮向下滚动
+                            dataCmp.setValue(dataCmp.getValue().add("d", -1)); // 减少日期数，可以根据需求调整操作
+                        } else if (delta < 0) {
+                            // 滚轮向上滚动
+                            dataCmp.setValue(dataCmp.getValue().add("d", 1)); // 增加日期数，可以根据需求调整操作
+                        }
                     }
                 }
             });
