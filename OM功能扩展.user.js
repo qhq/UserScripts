@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240422.1555
+// @version      20240422.1613
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1158,8 +1158,7 @@
                                             var editItem = extCmp.store.data.items[lastEditRow];
                                             if (
                                                 cancelReasonId == 0 ||
-                                                (lastEditCol != 7 && lastEditCol != 9) ||
-                                                !editItem.dirty
+                                                (lastEditCol != 7 && lastEditCol != 9)
                                             ) {
                                                 return;
                                             }
@@ -1183,13 +1182,13 @@
                                             var fDnlRealprice = extStoreData.fDnlRealprice; // 实际发货单价
 
                                             var RealacceptQty = parseFloat(fPdmBoxtosales * box + remain); //验单数
-                                            var newMoney = parseFloat(elements[11].innerText).toFixed(2);
-                                            var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
+                                            // var newMoney = parseFloat(elements[11].innerText).toFixed(2);
+                                            // var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
 
                                             var craID =
                                                 panelCmp.deliveryLineGrid.store.data.items[lastEditRow].data
                                                     .iDnlCancelreasonId;
-                                            if (newMoney == oldMoney && RealacceptQty == iDnlRealshipQty) {
+                                            if (RealacceptQty == iDnlRealshipQty) {
                                                 elements[15].innerText = " ";
                                                 panelCmp.deliveryLineGrid.store.data.items[
                                                     lastEditRow
