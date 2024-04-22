@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240421.2311
+// @version      20240422.0900
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1452,6 +1452,10 @@ div.el-col.el-col-14 > div:nth-child(6) {
     }
     setCraData();
 
+    if (PopsPanel.getValue("filiterroute")) {
+        deliveryCusReturn.FiliterRoute();
+    }
+
     OwnCSS.init();
     PopsPanel.initMenu();
     let pageSize = PopsPanel.getValue("pagesize");
@@ -1459,60 +1463,60 @@ div.el-col.el-col-14 > div:nth-child(6) {
         pageSize = 20;
         PopsPanel.setValue("pagesize", pageSize);
     }
-    // 客户回单
-    if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
-        DOMUtils.ready(function () {
-            if (PopsPanel.getValue("filiterroute")) {
-                deliveryCusReturn.FiliterRoute();
+    utils.waitNode("#mainTabPanel").then(() => {
+        // 客户回单
+        if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
+            DOMUtils.ready(function () {
                 utils.waitNode('input[name="startRotName"]').then((el) => {
-                    if (el.className !== "isModified") {
-                        let comboCmp = API.findCmp({ xtype: "combo", refName: "startRotName" })[0];
-                        comboCmp.store.load({ params: "start" });
-                    }
+                    setTimeout(function () {
+                        if (el.className !== "isModified") {
+                            let comboCmp = API.findCmp({ xtype: "combo", refName: "startRotName" })[0];
+                            comboCmp.store.load({ params: "start" });
+                        }
+                    }, 500);
                 });
-            }
-            if (PopsPanel.getValue("linkRotName")) {
-                deliveryCusReturn.LinkRotName();
-            }
-            if (PopsPanel.getValue("filterKeywords")) {
-                deliveryCusReturn.FilterKeywords();
-            }
-            if (pageSize !== 20) {
-                deliveryCusReturn.changePageSize(pageSize);
-            }
-            if (PopsPanel.getValue("filitershipto")) {
-                deliveryCusReturn.FiliterShipToName();
-            }
-            if (PopsPanel.getValue("btnclose")) {
-                //  setTimeout(function () {
-                deliveryCusReturn.btnCloseLayout();
-                //  }, 500);
-            }
-            deliveryCusReturn.addEventListener();
-            deliveryCusReturn.doubleClickSelectAll();
-        });
-    }
-    // 验单导出SAP
-    if (window.location.pathname.startsWith("/modules/sap_check")) {
-        DOMUtils.ready(function () {
-            if (PopsPanel.getValue("autoSyncSAP")) {
-                SyncSAP.autoSyncSAP();
-            }
-        });
-    }
-    // 不影响库存订单
-    if (window.location.pathname.startsWith("/modules/repr_addUnNormalOrder")) {
-        if (PopsPanel.getValue("om-unnormal-order-shield")) {
-            UnNormalOrder.modifyStyle();
-            //UnNormalOrder.hiddenElements();
+                if (PopsPanel.getValue("linkRotName")) {
+                    deliveryCusReturn.LinkRotName();
+                }
+                if (PopsPanel.getValue("filterKeywords")) {
+                    deliveryCusReturn.FilterKeywords();
+                }
+                if (pageSize !== 20) {
+                    deliveryCusReturn.changePageSize(pageSize);
+                }
+                if (PopsPanel.getValue("filitershipto")) {
+                    deliveryCusReturn.FiliterShipToName();
+                }
+                if (PopsPanel.getValue("btnclose")) {
+                    //  setTimeout(function () {
+                    deliveryCusReturn.btnCloseLayout();
+                    //  }, 500);
+                }
+                deliveryCusReturn.addEventListener();
+                deliveryCusReturn.doubleClickSelectAll();
+            });
         }
-    }
-    // 销售订单
-    if (window.location.pathname.startsWith("/modules/repr_addOrderAction")) {
-        if (PopsPanel.getValue("om-normal-order-shield")) {
-            NormalOrder.modifyStyle();
+        // 验单导出SAP
+        if (window.location.pathname.startsWith("/modules/sap_check")) {
+            DOMUtils.ready(function () {
+                if (PopsPanel.getValue("autoSyncSAP")) {
+                    SyncSAP.autoSyncSAP();
+                }
+            });
         }
-    }
-
+        // 不影响库存订单
+        if (window.location.pathname.startsWith("/modules/repr_addUnNormalOrder")) {
+            if (PopsPanel.getValue("om-unnormal-order-shield")) {
+                UnNormalOrder.modifyStyle();
+                //UnNormalOrder.hiddenElements();
+            }
+        }
+        // 销售订单
+        if (window.location.pathname.startsWith("/modules/repr_addOrderAction")) {
+            if (PopsPanel.getValue("om-normal-order-shield")) {
+                NormalOrder.modifyStyle();
+            }
+        }
+    });
     /* -----------------↑执行入口↑----------------- */
 })();
