@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240422.0910
+// @version      20240422.1039
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1181,7 +1181,10 @@
                     });
                 });
             }
-            Ext.getCmp("ext-comp-1003").on({
+
+            let gridCmp = API.findCmp({ xtype: "grid", refName: "deliveryCusReturnGrid" })[0];
+            //Ext.getCmp("ext-comp-1003")
+            gridCmp.on({
                 click: function (e) {
                     // console.log(event, e);
                     // debugger
@@ -1218,6 +1221,51 @@
                     }
                 },
             });
+
+            /*
+             * 监听日期框滚轮事件，实现日期滚动
+             */
+            let dataCmp = API.findCmp({ xtype: "datefield", refName: "orderDate" })[0];
+            DOMUtils.on(dataCmp.el.dom, "wheel", function (e) {
+                e.preventDefault();
+                // console.log(e); // 现有的日志输出
+
+                // 防抖逻辑
+                if (!dataCmp.hasOwnProperty("wheeling") || !dataCmp.wheeling) {
+                    dataCmp.wheeling = true;
+
+                    setTimeout(function () {
+                        dataCmp.wheeling = false;
+                    }, 100);
+
+                    // 计算滚轮方向
+                    var delta = e.deltaY || e.wheelDelta || e.detail;
+
+                    if (delta > 0) {
+                        // 滚轮向下滚动
+                        dataCmp.setValue(dataCmp.getValue().add("d", -1)); // 减少日期数，可以根据需求调整操作
+                    } else if (delta < 0) {
+                        // 滚轮向上滚动
+                        dataCmp.setValue(dataCmp.getValue().add("d", 1)); // 增加日期数，可以根据需求调整操作
+                    }
+                }
+            });
+
+            /*
+             * 发运号、订单号双击自动清空日期栏
+             */
+            let idDlnCmp = API.findCmp({ xtype: "textfield", refName: "idDln" })[0];
+            DOMUtils.on(idDlnCmp.el.dom, "dblclick", function (e) {
+                e.preventDefault();
+                // console.log(e); // 现有的日志输出
+                dataCmp.setValue("");
+            });
+            let orderIdCmp = API.findCmp({ xtype: "textfield", refName: "orderId" })[0];
+            DOMUtils.on(orderIdCmp.el.dom, "dblclick", function (e) {
+                e.preventDefault();
+                // console.log(e); // 现有的日志输出
+                dataCmp.setValue("");
+            });
         },
 
         /**
@@ -1228,17 +1276,20 @@
                 .lastChild;
             let titleEM = element.querySelector("table > tbody > tr > td.x-toolbar-left");
             titleEM.setAttribute("title", "双击全选/取消全选订单");
-            element.addEventListener("dblclick", function () {
-                let cmp = API.findCmp({ xtype: "grid", refName: "deliveryCusReturnGrid" })[0].selModel;
-                var a = document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-checker > div > div");
-                var b = Ext.fly(a.parentNode);
-                var d = b.hasClass("x-grid3-hd-checker-on");
-                if (d) {
-                    b.removeClass("x-grid3-hd-checker-on");
-                    cmp.clearSelections();
-                } else {
-                    b.addClass("x-grid3-hd-checker-on");
-                    cmp.selectAll();
+            element.addEventListener("dblclick", function (e) {
+                // console.log(e.target);
+                if (e.target.className == "x-toolbar-left") {
+                    let cmp = API.findCmp({ xtype: "grid", refName: "deliveryCusReturnGrid" })[0].selModel;
+                    var a = document.querySelector("td.x-grid3-hd.x-grid3-cell.x-grid3-td-checker > div > div");
+                    var b = Ext.fly(a.parentNode);
+                    var d = b.hasClass("x-grid3-hd-checker-on");
+                    if (d) {
+                        b.removeClass("x-grid3-hd-checker-on");
+                        cmp.clearSelections();
+                    } else {
+                        b.addClass("x-grid3-hd-checker-on");
+                        cmp.selectAll();
+                    }
                 }
             });
         },
