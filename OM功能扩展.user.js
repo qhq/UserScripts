@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240422.1051
+// @version      20240422.1555
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1135,48 +1135,77 @@
              * @param {string} idDln - 单据编号
              */
             function autoSelectCra(idDln) {
-                utils.waitNode(`div[id="${idDln}"] div.x-layer.x-editor.x-small-editor.x-grid-editor`).then((e) => {
+                utils.waitNode(`div[id="${idDln}"] div.x-grid3-viewport`).then((e) => {
                     const panelCmp = Ext.getCmp(idDln);
-                    // var element = panelCmp.el.dom.querySelector("tr.x-grid3-hd-row[hidden]");
-                    // var parentElement = panelCmp.el.dom.querySelector("div[id^='ext-comp']");
                     // const extCmp = Ext.getCmp(panelCmp.body.query('input.x-form-text.x-form-field.x-form-num-field')[0].id);
-                    const extCmp = panelCmp.findByType("editorgrid")[0]; // 单据编辑器
-                    const inputCmp = Ext.getCmp(e.id).field; // 修改数字输入框
-                    inputCmp.on({
-                        Blur: function (e) {
-                            // log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
-                            var lastActiveRow = extCmp.selModel.grid.lastActiveEditor.row;
-                            var cancelReasonId = PopsPanel.getValue("cancelreason-selector");
-                            if (cancelReasonId == 0) {
-                                // 未选择取消原因，不处理
-                                return;
-                            }
-                            var cancelReasonName = craData.find((item) => item.value === cancelReasonId).text;
-                            // extCmp.store.getAt(3).getChanges()
-                            // console.log("modified:",extCmp.store.getAt(lastActiveRow).modified);
-                            // console.log("getChanges:",extCmp.store.getAt(lastActiveRow).getChanges());
+                    const extCmp = panelCmp.findByType("editorgrid")[0]; // 单据编辑器组件
+                    extCmp.on({
+                        dblclick: function (e) {
+                            // console.log(e.target.parentNode.cellIndex); // 单元格序列元素
+                            utils
+                                .waitNode(
+                                    `div[id="${idDln}"] div[class$="x-layer x-editor x-small-editor x-grid-editor"]`
+                                )
+                                .then((e) => {
+                                    const editorCmp = Ext.getCmp(e.id); // 修改数字输入框组件
+                                    editorCmp.on({
+                                        complete: function (e) {
+                                            // log.info(panelCmp.deliveryLineGrid.store.getModifiedRecords());
+                                            // var lastActiveRow = extCmp.selModel.grid.lastActiveEditor.row;
+                                            var lastEditRow = extCmp.lastEdit.row;
+                                            var lastEditCol = extCmp.lastEdit.col;
+                                            var cancelReasonId = PopsPanel.getValue("cancelreason-selector");
+                                            var editItem = extCmp.store.data.items[lastEditRow];
+                                            if (
+                                                cancelReasonId == 0 ||
+                                                (lastEditCol != 7 && lastEditCol != 9) ||
+                                                !editItem.dirty
+                                            ) {
+                                                return;
+                                            }
+                                            var cancelReasonName = craData.find(
+                                                (item) => item.value === cancelReasonId
+                                            ).text;
+                                            // extCmp.store.getAt(3).getChanges()
+                                            // console.log("modified:",extCmp.store.getAt(lastEditRow).modified);
+                                            // console.log("getChanges:",extCmp.store.getAt(lastEditRow).getChanges());
 
-                            var elements = extCmp
-                                .getEl()
-                                .dom.querySelectorAll("div.x-grid3-row")
-                                [lastActiveRow].querySelectorAll("div.x-grid3-cell-inner");
-                            var extStoreData = extCmp.store.data.items[lastActiveRow].data;
+                                            var elements = extCmp
+                                                .getEl()
+                                                .dom.querySelectorAll("div.x-grid3-row")
+                                                [lastEditRow].querySelectorAll("div.x-grid3-cell-inner");
+                                            var extStoreData = editItem.data;
 
-                            var iDnlRealshipQty = extStoreData.iDnlRealshipQty; // 实际发货数量
-                            var fDnlRealprice = extStoreData.fDnlRealprice; // 实际发货单价
+                                            var box = extStoreData.box; // 箱数
+                                            var remain = extStoreData.remain; // 盒数
+                                            var fPdmBoxtosales = extStoreData.fPdmBoxtosales; // 箱转盒
+                                            var iDnlRealshipQty = extStoreData.iDnlRealshipQty; // 实际发货数量
+                                            var fDnlRealprice = extStoreData.fDnlRealprice; // 实际发货单价
 
-                            var newMoney = parseFloat(elements[11].innerText).toFixed(2);
-                            var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
+                                            var RealacceptQty = parseFloat(fPdmBoxtosales * box + remain); //验单数
+                                            var newMoney = parseFloat(elements[11].innerText).toFixed(2);
+                                            var oldMoney = parseFloat(iDnlRealshipQty * fDnlRealprice).toFixed(2);
 
-                            if (newMoney == oldMoney) {
-                                elements[15].innerText = " ";
-                                panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.iDnlCancelreasonId = 0;
-                                panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.vrCraName = "";
-                            } else if (elements[15].innerText == " ") {
-                                elements[15].innerText = cancelReasonName;
-                                panelCmp.deliveryLineGrid.store.data.items[lastActiveRow].data.iDnlCancelreasonId =
-                                    cancelReasonId;
-                            }
+                                            var craID =
+                                                panelCmp.deliveryLineGrid.store.data.items[lastEditRow].data
+                                                    .iDnlCancelreasonId;
+                                            if (newMoney == oldMoney && RealacceptQty == iDnlRealshipQty) {
+                                                elements[15].innerText = " ";
+                                                panelCmp.deliveryLineGrid.store.data.items[
+                                                    lastEditRow
+                                                ].data.iDnlCancelreasonId = 0;
+                                                panelCmp.deliveryLineGrid.store.data.items[lastEditRow].data.vrCraName =
+                                                    "";
+                                            } else if (craID == 0) {
+                                                elements[15].innerText = cancelReasonName;
+                                                panelCmp.deliveryLineGrid.store.data.items[
+                                                    lastEditRow
+                                                ].data.iDnlCancelreasonId = cancelReasonId;
+                                            }
+                                        },
+                                    });
+                                    e.classList.add("catched");
+                                });
                         },
                     });
                 });
@@ -1234,7 +1263,9 @@
                 if (e.type == "wheel") {
                     e.preventDefault();
                     // console.log(e); // 现有的日志输出
-
+                    if (dataCmp.getValue() == "") {
+                        return;
+                    }
                     // 防抖逻辑
                     if (!dataCmp.hasOwnProperty("wheeling") || !dataCmp.wheeling) {
                         dataCmp.wheeling = true;
