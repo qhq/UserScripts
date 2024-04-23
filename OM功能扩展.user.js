@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240423.1016
+// @version      20240423.2116
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1474,27 +1474,32 @@
         getDefaultShieldCSS() {
             return `/* 不清楚作用时不要随意改动 */
 /* 输入框行间距 */
-.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+.el-form-item--mini.el-form-item,
+.el-form-item--small.el-form-item {
     margin-bottom: 1px !important;
 }
 /* 输入框左间距 */
 .el-input__inner {
-    padding: 0 10px;
+    padding: 0 10px !important;
 }
 /* 输入框标签高度 */
 .el-form-item--mini .el-form-item__label {
-    line-height: 20px;
+    line-height: 20px !important;
 }
 /* 输入框高度 */
 .el-input--mini .el-input__inner {
-    height: 20px;
-    line-height: 20px;
+    height: 20px !important;
+    line-height: 20px !important;
 }
 div.el-col.el-col-14 > div:nth-child(5) {
-    display: none;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
 }
 div.el-col.el-col-14 > div:nth-child(6) {
-    display: none;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
 }`;
         },
         modifyStyle() {
@@ -1518,34 +1523,35 @@ div.el-col.el-col-14 > div:nth-child(6) {
         getDefaultShieldCSS() {
             return `/* 不清楚作用时不要随意改动 */
 /* 输入框行间距 */
-.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
-    margin-bottom: 1px;
+.el-form-item--mini.el-form-item,
+.el-form-item--small.el-form-item {
+    margin-bottom: 1px !important;
 }
 /* 输入框左间距 */
 .el-input__inner {
-    padding: 0 10px;
+    padding: 0 10px !important;
 }
 /* 输入框标签高度 */
 .el-form-item--mini .el-form-item__label {
-    line-height: 20px;
+    line-height: 20px !important;
 }
 /* 输入框高度 */
 .el-input--mini .el-input__inner {
-    height: 20px;
-    line-height: 20px;
+    height: 20px !important;
+    line-height: 20px !important;
 }
 /* 顶部按钮 */
 .el-card__header {
-    padding: 1px 2px;
+    padding: 1px 2px !important;
 }
 .el-card__body {
-    position: absolute;
+    position: absolute !important;
     inset: 22px 0px 0px !important;
 }
 .el-radio-button--medium .el-radio-button__inner {
-    padding: 3px 20px;
-    font-size: 14px;
-    border-radius: 0
+    padding: 3px 20px !important;
+    font-size: 14px !important;
+    border-radius: 0 !important;
 }
 /* 新建订单左上角齿轮图标 */
 .clearfix > span {
