@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240423.0838
+// @version      20240423.0845
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -480,7 +480,7 @@
                                 PopsPanel.getSwtichDetail(
                                     "关键字勾选",
                                     "根据关键字批量勾选或取消勾选订单",
-                                    "filterKeywords",
+                                    "filterKeyWords",
                                     true
                                 ),
                                 PopsPanel.getSwtichDetail(
@@ -1565,16 +1565,16 @@ div.el-col.el-col-14 > div:nth-child(6) {
                 if (PopsPanel.getValue("linkRotName")) {
                     deliveryCusReturn.LinkRotName();
                 }
-                if (PopsPanel.getValue("filterKeywords")) {
+                if (PopsPanel.getValue("filterKeyWords")) {
                     deliveryCusReturn.FilterKeywords();
                 }
                 if (pageSize !== 20) {
                     deliveryCusReturn.changePageSize(pageSize);
                 }
-                if (PopsPanel.getValue("filitershipto")) {
+                if (PopsPanel.getValue("filiterShipTo")) {
                     deliveryCusReturn.FiliterShipToName();
                 }
-                if (PopsPanel.getValue("btnclose")) {
+                if (PopsPanel.getValue("moveCloseBtn")) {
                     //  setTimeout(function () {
                     deliveryCusReturn.btnCloseLayout();
                     //  }, 500);
