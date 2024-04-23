@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240423.0815
+// @version      20240423.0838
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -652,7 +652,7 @@
                             forms: [
                                 PopsPanel.getSwtichDetail(
                                     "【调整】关闭提货单按钮",
-                                    "关闭提货单按钮移动到查询按钮右侧",
+                                    "移动关闭提货单按钮到查询按钮右侧",
                                     "moveCloseBtn",
                                     true
                                 ),
@@ -663,7 +663,7 @@
                             type: "forms",
                             forms: [
                                 PopsPanel.getSwtichDetail(
-                                    "新建订单页面调整",
+                                    "【调整】新建订单页面",
                                     "调整新建订单页面布局",
                                     "om-normal-order-shield",
                                     true
@@ -671,7 +671,7 @@
                             ],
                         },
                         this.getOwnextAreaRule(
-                            "自定义屏蔽CSS，<a href='javascript:;'>点击重置</a>",
+                            "自定义CSS，<a href='javascript:;'>点击重置</a>",
                             "om-normal-order-css",
                             NormalOrder.getDefaultShieldCSS(),
                             "om-normal-order-css"
@@ -681,7 +681,7 @@
                             type: "forms",
                             forms: [
                                 PopsPanel.getSwtichDetail(
-                                    "不影响库存订单页面调整",
+                                    "【调整】不影响库存订单页面",
                                     "调整不影响库存订单页面布局。",
                                     "om-unnormal-order-shield",
                                     true
@@ -689,7 +689,7 @@
                             ],
                         },
                         this.getOwnextAreaRule(
-                            "自定义屏蔽CSS，<a href='javascript:;'>点击重置</a>",
+                            "自定义CSS，<a href='javascript:;'>点击重置</a>",
                             "om-unnormal-order-css",
                             UnNormalOrder.getDefaultShieldCSS(),
                             "om-unnormal-order-css"
