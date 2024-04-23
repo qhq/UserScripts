@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240423.0845
+// @version      20240423.1016
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1125,7 +1125,7 @@
          * 添加单击、双击监听
          */
         addEventListener() {
-            /*
+            /**
              * 按产品编号列进行排序
              * @param {string} idDln - 单据编号
              */
@@ -1136,7 +1136,7 @@
                     e.querySelectorAll("tr.x-grid3-hd-row")[1].setAttribute("hidden", "");
                 });
             }
-            /*
+            /**
              * 监听输入框实现自动选择取消原因
              * @param {string} idDln - 单据编号
              */
@@ -1250,7 +1250,7 @@
                 },
             });
 
-            /*
+            /**
              * 监听日期框滚轮事件，实现日期滚动
              * 双击日期框选择今天
              */
@@ -1287,7 +1287,7 @@
                 }
             });
 
-            /*
+            /**
              * 发运号、订单号双击自动清空日期栏
              */
             let idDlnCmp = API.findCmp({ xtype: "textfield", refName: "idDln" })[0];
@@ -1301,6 +1301,39 @@
                 e.preventDefault();
                 // console.log(e); // 现有的日志输出
                 dataCmp.setValue("");
+            });
+
+            /**
+            * 为搜索按钮添加滚轮调整日期
+            */
+            let searchBtnCmp = API.findCmp({ xtype: "button", refName: "btnQuery" })[0];
+            DOMUtils.on(searchBtnCmp.el.dom, "wheel", function (e) {
+                if (e.type == "wheel") {
+                    e.preventDefault();
+                    // console.log(e); // 现有的日志输出
+                    if (dataCmp.getValue() == "") {
+                        return;
+                    }
+                    // 防抖逻辑
+                    if (!dataCmp.hasOwnProperty("wheeling") || !dataCmp.wheeling) {
+                        dataCmp.wheeling = true;
+
+                        setTimeout(function () {
+                            dataCmp.wheeling = false;
+                        }, 100);
+
+                        // 计算滚轮方向
+                        var delta = e.deltaY || e.wheelDelta || e.detail;
+
+                        if (delta > 0) {
+                            // 滚轮向下滚动
+                            dataCmp.setValue(dataCmp.getValue().add("d", -1)); // 减少日期数，可以根据需求调整操作
+                        } else if (delta < 0) {
+                            // 滚轮向上滚动
+                            dataCmp.setValue(dataCmp.getValue().add("d", 1)); // 增加日期数，可以根据需求调整操作
+                        }
+                    }
+                }
             });
         },
 
