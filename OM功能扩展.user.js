@@ -1539,7 +1539,7 @@ div.el-col.el-col-14 > div:nth-child(6) {
     }
     setCraData();
 
-    if (PopsPanel.getValue("filiterroute")) {
+    if (PopsPanel.getValue("filiterRoute")) {
         deliveryCusReturn.FiliterRoute();
     }
 
