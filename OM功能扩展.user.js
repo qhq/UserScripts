@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240422.1613
+// @version      20240423.0815
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -466,6 +466,12 @@
                                     placeholder: "请输入分页大小",
                                 },
                                 PopsPanel.getSwtichDetail(
+                                    "默认多选",
+                                    "点选记录时不会清除已选记录",
+                                    "forceCtrlKey",
+                                    true
+                                ),
+                                PopsPanel.getSwtichDetail(
                                     "线路联动",
                                     "选择起始线路会同时选择终点线路",
                                     "linkRotName",
@@ -493,7 +499,7 @@
                                     text: "推送间隔（分钟）",
                                     type: "input",
                                     attributes: {
-                                        "data-key": "syncinterval",
+                                        "data-key": "syncInterval",
                                         "data-default-value": "5",
                                     },
                                     getValue() {
@@ -554,7 +560,7 @@
                                 PopsPanel.getSwtichDetail(
                                     "网点过滤",
                                     "过滤掉查询结果中指定网点的数据。",
-                                    "filitershipto",
+                                    "filiterShipTo",
                                     true
                                 ),
                             ],
@@ -597,7 +603,7 @@
                             text: "",
                             type: "forms",
                             forms: [
-                                PopsPanel.getSwtichDetail("线路优化", "仅显示列表中的线路选项", "filiterroute", true),
+                                PopsPanel.getSwtichDetail("线路优化", "仅显示列表中的线路选项", "filiterRoute", true),
                             ],
                         },
                         {
@@ -647,7 +653,7 @@
                                 PopsPanel.getSwtichDetail(
                                     "【调整】关闭提货单按钮",
                                     "关闭提货单按钮移动到查询按钮右侧",
-                                    "btnclose",
+                                    "moveCloseBtn",
                                     true
                                 ),
                             ],
@@ -1203,6 +1209,10 @@
             let gridCmp = API.findCmp({ xtype: "grid", refName: "deliveryCusReturnGrid" })[0];
             //Ext.getCmp("ext-comp-1003")
             gridCmp.on({
+                mousedown: function (e) {
+                    // 模拟按下Ctrl键
+                    if (PopsPanel.getValue("forceCtrlKey") && !e.ctrlKey) e.ctrlKey = true;
+                },
                 click: function (e) {
                     // console.log(event, e);
                     // debugger
