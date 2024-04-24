@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240423.2116
+// @version      20240424.1642
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -18,9 +18,9 @@
 // @grant        unsafeWindow
 // @run-at       document-start
 // @require      https://update.greasyfork.org/scripts/462234/1322684/Message.js
-// @require      https://update.greasyfork.org/scripts/456485/1357649/pops.js
-// @require      https://update.greasyfork.org/scripts/455186/1355010/WhiteSevsUtils.js
-// @require      https://update.greasyfork.org/scripts/465772/1344519/DOMUtils.js
+// @require      https://update.greasyfork.org/scripts/456485/1360571/pops.js
+// @require      https://update.greasyfork.org/scripts/455186/1365298/WhiteSevsUtils.js
+// @require      https://update.greasyfork.org/scripts/465772/1360574/DOMUtils.js
 // @downloadURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
 // @updateURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
@@ -469,31 +469,31 @@
                                     "默认多选",
                                     "点选记录时不会清除已选记录",
                                     "forceCtrlKey",
-                                    true
+                                    false
                                 ),
                                 PopsPanel.getSwtichDetail(
                                     "线路联动",
                                     "选择起始线路会同时选择终点线路",
                                     "linkRotName",
-                                    true
+                                    false
                                 ),
                                 PopsPanel.getSwtichDetail(
                                     "关键字勾选",
                                     "根据关键字批量勾选或取消勾选订单",
                                     "filterKeyWords",
-                                    true
+                                    false
                                 ),
                                 PopsPanel.getSwtichDetail(
                                     "产品排序",
                                     "订单明细按产品编号正序排序",
                                     "sortpdtCode",
-                                    true
+                                    false
                                 ),
                                 PopsPanel.getSwtichDetail(
                                     "自动推送SAP",
                                     "验单导出SAP界面增加根据定时循环自动推送SAP",
                                     "autoSyncSAP",
-                                    true
+                                    false
                                 ),
                                 {
                                     text: "推送间隔（分钟）",
@@ -561,7 +561,7 @@
                                     "网点过滤",
                                     "过滤掉查询结果中指定网点的数据。",
                                     "filiterShipTo",
-                                    true
+                                    false
                                 ),
                             ],
                         },
@@ -603,7 +603,7 @@
                             text: "",
                             type: "forms",
                             forms: [
-                                PopsPanel.getSwtichDetail("线路优化", "仅显示列表中的线路选项", "filiterRoute", true),
+                                PopsPanel.getSwtichDetail("线路优化", "仅显示列表中的线路选项", "filiterRoute", false),
                             ],
                         },
                         {
@@ -654,7 +654,7 @@
                                     "【调整】关闭提货单按钮",
                                     "移动关闭提货单按钮到查询按钮右侧",
                                     "moveCloseBtn",
-                                    true
+                                    false
                                 ),
                             ],
                         },
@@ -666,7 +666,7 @@
                                     "【调整】新建订单页面",
                                     "调整新建订单页面布局",
                                     "om-normal-order-shield",
-                                    true
+                                    false
                                 ),
                             ],
                         },
@@ -684,7 +684,7 @@
                                     "【调整】不影响库存订单页面",
                                     "调整不影响库存订单页面布局。",
                                     "om-unnormal-order-shield",
-                                    true
+                                    false
                                 ),
                             ],
                         },
