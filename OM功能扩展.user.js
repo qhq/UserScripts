@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240425.0933
+// @version      20240425.1114
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1242,13 +1242,17 @@
                         //     ".x-grid3-col.x-grid3-cell.x-grid3-td-3.x-selectable"
                         // ).innerText;
                         // let idDln = me.getView().grid.getStore().data.itemAt(rowIndex).get('idDln')
-                        let idDln = me.store.data.itemAt(rowIndex).get("idDln");
+                        let itemSelected = me.store.data.itemAt(rowIndex);
+                        let idDln = itemSelected.get("idDln");
                         let selModel = me.getSelectionModel();
+                        // selModel.deselectRow(rowIndex);
                         selModel.selectRow(rowIndex, true);
-                        let arrSelections = selModel.selections.items;
+                        let arrSelections = selModel.selections;
                         if (arrSelections.length > 0) {
-                            let lastItem = arrSelections.pop();
-                            arrSelections.unshift(lastItem);
+                            let lastItem = arrSelections.items.pop();
+                            let lastKey = arrSelections.keys.pop();
+                            arrSelections.items.unshift(lastItem);
+                            arrSelections.keys.unshift(lastKey);
                         } else {
                             e.ctrlKey = false;
                         }
