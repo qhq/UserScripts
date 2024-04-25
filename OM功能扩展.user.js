@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240424.1642
+// @version      20240425.0933
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1210,16 +1210,16 @@
             //Ext.getCmp("ext-comp-1003")
             gridCmp.on({
                 mousedown: function (e) {
-                    // 模拟按下Ctrl键
-                    if (PopsPanel.getValue("forceCtrlKey") && !e.ctrlKey) e.ctrlKey = true;
+                    // 默认Ctrl按键逻辑取反
+                    if (PopsPanel.getValue("forceCtrlKey")) {
+                        e.ctrlKey = !e.ctrlKey;
+                    }
                 },
                 click: function (e) {
                     // console.log(event, e);
-                    // debugger
                     var me = this;
                     var t = e.getTarget();
                     var control = t.className;
-                    // console.log(control);
                     if (control == "showDelivery") {
                         let idDln = t.innerText;
                         if (PopsPanel.getValue("sortpdtCode")) {
@@ -1235,11 +1235,23 @@
                     var me = this;
                     var t = e.getTarget();
                     var control = t.className;
-                    // console.log(control);
+                    // 获取点击的行号
+                    var rowIndex = me.view.findRowIndex(t);
                     if (control.includes("x-grid3-cell-inner x-grid3-col")) {
-                        let idDln = e.target.offsetParent.offsetParent.querySelector(
-                            ".x-grid3-col.x-grid3-cell.x-grid3-td-3.x-selectable"
-                        ).innerText;
+                        // let idDln = e.target.offsetParent.offsetParent.querySelector(
+                        //     ".x-grid3-col.x-grid3-cell.x-grid3-td-3.x-selectable"
+                        // ).innerText;
+                        // let idDln = me.getView().grid.getStore().data.itemAt(rowIndex).get('idDln')
+                        let idDln = me.store.data.itemAt(rowIndex).get("idDln");
+                        let selModel = me.getSelectionModel();
+                        selModel.selectRow(rowIndex, true);
+                        let arrSelections = selModel.selections.items;
+                        if (arrSelections.length > 0) {
+                            let lastItem = arrSelections.pop();
+                            arrSelections.unshift(lastItem);
+                        } else {
+                            e.ctrlKey = false;
+                        }
                         if (PopsPanel.getValue("sortpdtCode")) {
                             sortColumn(idDln);
                         }
@@ -1304,8 +1316,8 @@
             });
 
             /**
-            * 为搜索按钮添加滚轮调整日期
-            */
+             * 为搜索按钮添加滚轮调整日期
+             */
             let searchBtnCmp = API.findCmp({ xtype: "button", refName: "btnQuery" })[0];
             DOMUtils.on(searchBtnCmp.el.dom, "wheel", function (e) {
                 if (e.type == "wheel") {
