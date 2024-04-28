@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240425.1114
+// @version      20240428.1130
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -441,7 +441,7 @@
                                     text: "分页大小",
                                     type: "input",
                                     attributes: {
-                                        "data-key": "pagesize",
+                                        "data-key": "pageSize",
                                         "data-default-value": 20,
                                     },
                                     getValue() {
@@ -1434,7 +1434,7 @@
                 const autosync = tdElement.querySelector("#autosync");
                 DOMUtils.on(autosync, "click", function () {
                     autosync.disabled = true;
-                    let syncInterval = PopsPanel.getValue("syncinterval");
+                    let syncInterval = PopsPanel.getValue("syncInterval");
                     if (!syncInterval) {
                         syncInterval = 1;
                         PopsPanel.setValue("syncinterval", syncInterval);
@@ -1600,10 +1600,10 @@ div.el-col.el-col-14 > div:nth-child(6) {
 
     OwnCSS.init();
     PopsPanel.initMenu();
-    let pageSize = PopsPanel.getValue("pagesize");
+    let pageSize = PopsPanel.getValue("pageSize");
     if (!pageSize) {
         pageSize = 20;
-        PopsPanel.setValue("pagesize", pageSize);
+        PopsPanel.setValue("pageSize", pageSize);
     }
     // 客户回单
     if (window.location.pathname.startsWith("/modules/sap_deliveryCusReturn")) {
