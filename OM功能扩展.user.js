@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240428.1130
+// @version      20240501.1335
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1647,8 +1647,10 @@ div.el-col.el-col-14 > div:nth-child(6) {
             }
         });
     }
+    const PATH_PREFIXES = ["/modules/repr_addUnNormalOrder", "/modules/repr_addReturnOrderAction"];
+
     // 不影响库存订单
-    if (window.location.pathname.startsWith("/modules/repr_addUnNormalOrder")) {
+    if (PATH_PREFIXES.some((prefix) => window.location.pathname.startsWith(prefix))) {
         if (PopsPanel.getValue("om-unnormal-order-shield")) {
             UnNormalOrder.modifyStyle();
             //UnNormalOrder.hiddenElements();
