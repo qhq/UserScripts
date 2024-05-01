@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240501.1335
+// @version      20240501.1627
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -18,9 +18,9 @@
 // @grant        unsafeWindow
 // @run-at       document-start
 // @require      https://update.greasyfork.org/scripts/462234/1322684/Message.js
-// @require      https://update.greasyfork.org/scripts/456485/1360571/pops.js
-// @require      https://update.greasyfork.org/scripts/455186/1365298/WhiteSevsUtils.js
-// @require      https://update.greasyfork.org/scripts/465772/1360574/DOMUtils.js
+// @require      https://update.greasyfork.org/scripts/456485/1332775/pops.js
+// @require      https://update.greasyfork.org/scripts/455186/1323906/WhiteSevsUtils.js
+// @require      https://update.greasyfork.org/scripts/465772/1318702/DOMUtils.js
 // @downloadURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
 // @updateURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
