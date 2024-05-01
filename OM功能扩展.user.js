@@ -18,9 +18,9 @@
 // @grant        unsafeWindow
 // @run-at       document-start
 // @require      https://update.greasyfork.org/scripts/462234/1322684/Message.js
-// @require      https://update.greasyfork.org/scripts/456485/1332775/pops.js
-// @require      https://update.greasyfork.org/scripts/455186/1323906/WhiteSevsUtils.js
-// @require      https://update.greasyfork.org/scripts/465772/1318702/DOMUtils.js
+// @require      https://update.greasyfork.org/scripts/456485/1360571/pops.js
+// @require      https://update.greasyfork.org/scripts/455186/1365298/WhiteSevsUtils.js
+// @require      https://update.greasyfork.org/scripts/465772/1360574/DOMUtils.js
 // @downloadURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.user.js
 // @updateURL https://update.greasyfork.org/scripts/492635/OM%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95.meta.js
 // ==/UserScript==
@@ -59,7 +59,10 @@
 
     const log = new utils.Log(GM_info, unsafeWindow.console || console);
     log.config({
-        autoClearConsole: false,
+        debug: false,
+        logMaxCount: 100,
+        autoClearConsole: true,
+        tag: true,
     });
     const httpx = new utils.Httpx(GM_xmlhttpRequest);
     httpx.config({
@@ -76,7 +79,7 @@
     });
 
     /**
-     * api
+     * 自定义api
      */
     const API = {
         /**
@@ -180,8 +183,7 @@
         }
         .w-script-deleted .w-script-name::before {
           content: "【删除】";
-        }
-    `,
+        }`,
         OwnCSS: `
       .whitesev-hide{
         display: none;
@@ -191,8 +193,7 @@
       }
       .whitesev-hide{
         display: none;
-      }
-    `,
+      }`,
         /**
          * 初始化
          */
@@ -220,7 +221,7 @@
         /**
          * 初始化菜单
          */
-        initMenu() {
+        init() {
             this.initLocalDefaultValue();
             if (unsafeWindow.top !== unsafeWindow.self) {
                 return;
@@ -1599,7 +1600,7 @@ div.el-col.el-col-14 > div:nth-child(6) {
     }
 
     OwnCSS.init();
-    PopsPanel.initMenu();
+    PopsPanel.init();
     let pageSize = PopsPanel.getValue("pageSize");
     if (!pageSize) {
         pageSize = 20;
@@ -1649,7 +1650,7 @@ div.el-col.el-col-14 > div:nth-child(6) {
     }
     const PATH_PREFIXES = ["/modules/repr_addUnNormalOrder", "/modules/repr_addReturnOrderAction"];
 
-    // 不影响库存订单
+    // 不影响库存订单、退货订单
     if (PATH_PREFIXES.some((prefix) => window.location.pathname.startsWith(prefix))) {
         if (PopsPanel.getValue("om-unnormal-order-shield")) {
             UnNormalOrder.modifyStyle();
