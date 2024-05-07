@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240501.1627
+// @version      20240507.1646
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -112,6 +112,48 @@
                     // 根据需求处理错误
                 }
                 resolve(result);
+            });
+        },
+        /**
+         * 获取订单类型
+         */
+        getOrderType() {
+            /**
+             * 格式化数据函数
+             * 将输入的数据数组转换为以idOty为键、value为值的对象
+             * @param {Array} data - 输入的数据数组，每个元素应包含idOty和value属性
+             * @returns {Object} organizedData - 返回一个对象，以idOty为键、value为值
+             */
+            function formatData(data) {
+                // 创建一个空对象以存储格式化后的数据
+                const organizedData = {};
+                // 遍历数据数组，将每个元素的idOty作为键，value作为值存储到organizedData对象中
+                data.forEach((item) => {
+                    organizedData[item.idOty] = item.value;
+                });
+                // 返回格式化后的数据对象
+                return organizedData;
+            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const url = `${document.location.origin}/brightdairy2/repr/s/addOrderAction/getTbType`;
+                    const response = await httpx.get({
+                        url,
+                        fetch: true,
+                        responseType: "json",
+                    });
+
+                    if (!response.status) {
+                        resolve([]);
+                        return;
+                    }
+
+                    const result = formatData(response.data.response);
+                    resolve(result);
+                } catch (error) {
+                    console.error("Error fetching order types:", error);
+                    reject(error); // 将错误传递给Promise链的下一个拒绝处理程序
+                }
             });
         },
 
@@ -476,6 +518,12 @@
                                     "线路联动",
                                     "选择起始线路会同时选择终点线路",
                                     "linkRotName",
+                                    false
+                                ),
+                                PopsPanel.getSwtichDetail(
+                                    "显示订单类型",
+                                    "在负订单ID列显示订单类型",
+                                    "showOrderType",
                                     false
                                 ),
                                 PopsPanel.getSwtichDetail(
@@ -1040,6 +1088,7 @@
              * 劫持请求
              */
             const ajaxHooker = utils.ajaxHooker();
+            let isChange = false;
             ajaxHooker.hook(function (request) {
                 // log.info({ ajaxHookr: request.url });
                 if (request.url.startsWith("/brightdairy2/deliveryNote/getByCusRouteTerr")) {
@@ -1054,6 +1103,12 @@
                             initializeRouteList()
                                 .then((blackList) => {
                                     const result = data.data.filter((item) => {
+                                        if (PopsPanel.getValue("showOrderType")) {
+                                            // 负订单id+订单类型
+                                            item.iDlnRevordid =
+                                                item.iDlnRevordid + "<" + orderTypes[item.iDlnProperty] + ">";
+                                            isChange = true;
+                                        }
                                         // 部分匹配：item.vrSptName.includes(name)
                                         if (!blackList.some((name) => name === item.vrSptName)) {
                                             return item;
@@ -1074,6 +1129,9 @@
                                             `已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`,
                                             { timeout: 2000 }
                                         );
+                                        isChange = true;
+                                    }
+                                    if (isChange) {
                                         data.data = result;
                                         data.rows = result;
                                         _request_.responseText = JSON.stringify(data);
@@ -1595,6 +1653,12 @@ div.el-col.el-col-14 > div:nth-child(6) {
     }
     setCraData();
 
+    let orderTypes = [];
+    async function setOrderTypes() {
+        orderTypes = await API.getOrderType();
+    }
+    setOrderTypes();
+
     if (PopsPanel.getValue("filiterRoute")) {
         deliveryCusReturn.FiliterRoute();
     }
@@ -1627,7 +1691,7 @@ div.el-col.el-col-14 > div:nth-child(6) {
                 if (pageSize !== 20) {
                     deliveryCusReturn.changePageSize(pageSize);
                 }
-                if (PopsPanel.getValue("filiterShipTo")) {
+                if (PopsPanel.getValue("filiterShipTo") || PopsPanel.getValue("showOrderType")) {
                     deliveryCusReturn.FiliterShipToName();
                 }
                 if (PopsPanel.getValue("moveCloseBtn")) {
