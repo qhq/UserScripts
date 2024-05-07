@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240507.1646
+// @version      20240507.1658
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -549,7 +549,7 @@
                                     type: "input",
                                     attributes: {
                                         "data-key": "syncInterval",
-                                        "data-default-value": "5",
+                                        "data-default-value": 5,
                                     },
                                     getValue() {
                                         return PopsPanel.getValue(
