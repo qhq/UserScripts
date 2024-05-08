@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240507.1658
+// @version      20240508.0852
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -625,7 +625,7 @@
                                             "div",
                                             {
                                                 className: "pops-panel-textarea",
-                                                innerHTML: `<textarea placeholder="请输入需要过滤掉的网点名称，每行一个" style="height:150px;"></textarea>`,
+                                                innerHTML: `<textarea placeholder="请输入需要过滤掉的网点名称，每行一个" style="height:150px; font-size: 13px;"></textarea>`,
                                             },
                                             {
                                                 style: "width: 100%;",
@@ -666,7 +666,7 @@
                                             "div",
                                             {
                                                 className: "pops-panel-textarea",
-                                                innerHTML: `<textarea placeholder="请输入线路名称，每行一个\n留空获取默认线路" style="height:150px;"></textarea>`,
+                                                innerHTML: `<textarea placeholder="请输入线路名称，每行一个\n留空获取默认线路" style="height:150px; font-size: 13px;"></textarea>`,
                                             },
                                             {
                                                 style: "width: 100%;",
