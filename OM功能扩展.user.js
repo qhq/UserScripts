@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240509.0852
+// @version      20240509.0926
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -522,7 +522,7 @@
                                 ),
                                 PopsPanel.getSwtichDetail(
                                     "显示订单类型",
-                                    "在负订单ID列显示订单类型",
+                                    "订单列表增加订单类型显示",
                                     "showOrderType",
                                     false
                                 ),
