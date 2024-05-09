@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         OM功能扩展
-// @version      20240508.0852
+// @version      20240509.0852
 // @description  OM系统功能调整优化
 // @author       Mr.Q
 // @namespace    https://greasyfork.org/users/9065
@@ -1088,7 +1088,6 @@
              * 劫持请求
              */
             const ajaxHooker = utils.ajaxHooker();
-            let isChange = false;
             ajaxHooker.hook(function (request) {
                 // log.info({ ajaxHookr: request.url });
                 if (request.url.startsWith("/brightdairy2/deliveryNote/getByCusRouteTerr")) {
@@ -1103,12 +1102,6 @@
                             initializeRouteList()
                                 .then((blackList) => {
                                     const result = data.data.filter((item) => {
-                                        if (PopsPanel.getValue("showOrderType")) {
-                                            // 负订单id+订单类型
-                                            item.iDlnRevordid =
-                                                item.iDlnRevordid + "<" + orderTypes[item.iDlnProperty] + ">";
-                                            isChange = true;
-                                        }
                                         // 部分匹配：item.vrSptName.includes(name)
                                         if (!blackList.some((name) => name === item.vrSptName)) {
                                             return item;
@@ -1129,9 +1122,6 @@
                                             `已过滤站点：<div style='text-align: left;'>${formattedNames}</div>`,
                                             { timeout: 2000 }
                                         );
-                                        isChange = true;
-                                    }
-                                    if (isChange) {
                                         data.data = result;
                                         data.rows = result;
                                         _request_.responseText = JSON.stringify(data);
@@ -1324,6 +1314,48 @@
                     }
                 },
             });
+
+            /**
+             * 动态向表格中添加一列，如果该列不存在的话。
+             * 这个功能依赖于一个名为gridCmp的组件和一个名为showOrderType的配置项。
+             * 如果gridCmp存在且showOrderType的值为真，则会尝试向表格添加一个显示“订单类型”的列。
+             */
+            if (gridCmp && PopsPanel.getValue("showOrderType")) {
+                // 定义要添加的新列的配置
+                var newColumnConfig = {
+                    header: "订单类型",
+                    dataIndex: "iDlnProperty",
+                    sortable: true,
+                    renderer: function (value, cellmeta, record, rowIndex, columnIndex, store) {
+                        return orderTypes[value];
+                    },
+                };
+
+                // 获取当前表格的列模型
+                var existingColumnModel = gridCmp.getColumnModel();
+                if (existingColumnModel) {
+                    // 检查当前列模型中是否已存在相同数据索引的列
+                    var columnIndex = existingColumnModel.findColumnIndex(newColumnConfig.dataIndex);
+                    if (columnIndex === -1) {
+                        // 如果不存在，则将新列配置合并到现有的列配置中
+                        // 优化：避免不必要的数组拷贝，直接操作现有配置（视具体情形而定）
+                        // 注意：这取决于existingColumnModel.config的可操作性
+                        // var newConfig = Ext.apply([], existingColumnModel.config);
+                        var newConfig = existingColumnModel.config.slice(); // 创建一个浅拷贝来避免直接修改原有配置
+                        newConfig.push(newColumnConfig);
+                        // 更新列模型的配置
+                        existingColumnModel.setConfig(newConfig);
+
+                        // 将新列移动到指定位置（第11列，索引从0开始）
+                        // 使用常量代替魔法数字以提高代码的可读性
+                        var TARGET_COLUMN_INDEX = 10;
+                        existingColumnModel.moveColumn(newConfig.length - 1, TARGET_COLUMN_INDEX);
+
+                        // 刷新表格视图以显示新的列和顺序
+                        gridCmp.getView().refresh();
+                    }
+                }
+            }
 
             /**
              * 监听日期框滚轮事件，实现日期滚动
@@ -1691,7 +1723,7 @@ div.el-col.el-col-14 > div:nth-child(6) {
                 if (pageSize !== 20) {
                     deliveryCusReturn.changePageSize(pageSize);
                 }
-                if (PopsPanel.getValue("filiterShipTo") || PopsPanel.getValue("showOrderType")) {
+                if (PopsPanel.getValue("filiterShipTo")) {
                     deliveryCusReturn.FiliterShipToName();
                 }
                 if (PopsPanel.getValue("moveCloseBtn")) {
